@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Hero = () => {
@@ -19,10 +19,12 @@ export const Hero = () => {
               Transform your school's dismissal process with our comprehensive WordPress solution. Enhance safety, reduce wait times, and streamline pick-up operations.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <Button size="lg" className="gap-2">
-                Download Theme
-                <Download className="h-5 w-5" />
-              </Button>
+              <Link to="/plugin">
+                <Button size="lg" className="gap-2">
+                  Login
+                  <LogIn className="h-5 w-5" />
+                </Button>
+              </Link>
               <Link to="/plugin">
                 <Button 
                   size="lg" 
