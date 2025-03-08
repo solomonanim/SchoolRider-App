@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Send, Mail, MessageSquare, User } from "lucide-react";
+import { Send, Mail, MessageSquare, User, School } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export const ContactForm = () => {
@@ -30,10 +30,10 @@ export const ContactForm = () => {
         <div className="max-w-3xl mx-auto text-center mb-16">
           <p className="text-sm font-medium text-primary mb-2 tracking-wider uppercase">Contact Us</p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-            Get in touch with our team
+            Ready to transform your school dismissal?
           </h2>
           <p className="text-muted-foreground text-lg">
-            Have questions about Grove? We're here to help you get started.
+            Get in touch with our team to learn how SchoolRider can work for your institution.
           </p>
         </div>
         
@@ -69,6 +69,20 @@ export const ContactForm = () => {
               </div>
               
               <div className="space-y-2">
+                <label htmlFor="school" className="text-sm font-medium flex items-center gap-2">
+                  <School className="h-4 w-4" />
+                  School/Institution
+                </label>
+                <input
+                  id="school"
+                  type="text"
+                  required
+                  className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+                  placeholder="Washington Elementary School"
+                />
+              </div>
+              
+              <div className="space-y-2">
                 <label htmlFor="message" className="text-sm font-medium flex items-center gap-2">
                   <MessageSquare className="h-4 w-4" />
                   Your Message
@@ -78,7 +92,7 @@ export const ContactForm = () => {
                   required
                   rows={4}
                   className="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition resize-none"
-                  placeholder="How can we help?"
+                  placeholder="I'd like more information about implementing SchoolRider at our school."
                 />
               </div>
               
