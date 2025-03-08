@@ -23,16 +23,16 @@ export const Hero = () => {
                 Download Theme
                 <Download className="h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="gap-2"
-                as={Link}
-                to="/plugin"
-              >
-                View Demo
-                <ArrowRight className="h-5 w-5" />
-              </Button>
+              <Link to="/plugin">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="gap-2"
+                >
+                  View Demo
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
           <div className="flex-1 relative">
