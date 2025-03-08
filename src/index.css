@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 222 47% 11%;
+    --primary: 199 89% 48%; /* Changed to bright blue */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96%;
@@ -33,7 +33,7 @@
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 222 47% 11%;
+    --ring: 199 89% 48%; /* Changed to match primary */
 
     --radius: 0.5rem;
   }

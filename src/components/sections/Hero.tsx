@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Download } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
@@ -22,7 +23,13 @@ export const Hero = () => {
                 Download Theme
                 <Download className="h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="gap-2">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="gap-2"
+                as={Link}
+                to="/plugin"
+              >
                 View Demo
                 <ArrowRight className="h-5 w-5" />
               </Button>
