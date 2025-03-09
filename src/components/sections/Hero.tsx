@@ -16,7 +16,7 @@ export const Hero = () => {
               <span className="text-3xl md:text-4xl lg:text-5xl">Safe & Efficient School Dismissal</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0">
-              Transform your school's dismissal process with our comprehensive WordPress solution. Enhance safety, reduce wait times, and streamline pick-up operations.
+              Transform your school's dismissal process with our comprehensive solution. Enhance safety, reduce wait times, and streamline pick-up operations.
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
               <Link to="/plugin">
