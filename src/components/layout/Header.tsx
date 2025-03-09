@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { ThemeButton } from "../ui/ThemeButton";
+import { Link } from "react-router-dom";
 
 const navItems = [
   { title: "Features", href: "#features" },
@@ -40,7 +41,7 @@ export const Header = () => {
           <div className="relative w-8 h-8 rounded-md bg-foreground">
             <div className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-accent-foreground" />
           </div>
-          <span className="font-display font-semibold text-lg md:text-xl">Grove</span>
+          <span className="font-display font-semibold text-lg md:text-xl">SchoolRider</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -57,7 +58,9 @@ export const Header = () => {
           <div className="ml-2">
             <ThemeButton />
           </div>
-          <Button className="ml-4 shadow-sm">Download</Button>
+          <Link to="/plugin">
+            <Button className="ml-4 shadow-sm">Login</Button>
+          </Link>
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -92,7 +95,9 @@ export const Header = () => {
               {item.title}
             </a>
           ))}
-          <Button className="mt-4 w-full">Download</Button>
+          <Link to="/plugin">
+            <Button className="mt-4 w-full">Login</Button>
+          </Link>
         </nav>
       </div>
     </header>

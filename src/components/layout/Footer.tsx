@@ -14,10 +14,10 @@ export const Footer = () => {
             <div className="relative w-8 h-8 rounded-md bg-foreground">
               <div className="absolute -right-1 -top-1 w-4 h-4 rounded-full bg-accent-foreground" />
             </div>
-            <span className="font-display font-semibold text-xl">Grove</span>
+            <span className="font-display font-semibold text-xl">SchoolRider</span>
           </div>
           <p className="text-muted-foreground text-sm max-w-xs">
-            A premium WordPress theme designed with minimalism and performance in mind.
+            A comprehensive WordPress solution for safe and efficient school dismissal processes.
           </p>
           <div className="flex space-x-4">
             <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
@@ -89,7 +89,7 @@ export const Footer = () => {
       
       <div className="container mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-muted-foreground">
-          © {currentYear} Grove Theme. All rights reserved.
+          © {currentYear} SchoolRider Theme by <a href="https://solangigs.com" className="hover:text-primary transition-colors">Solomon Anim (Solan)</a>. All rights reserved.
         </p>
         <div className="flex gap-6">
           <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

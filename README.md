@@ -1,4 +1,18 @@
-# Welcome to your Lovable project
+
+# SchoolRider WordPress Theme & Plugin
+
+A comprehensive WordPress solution for safe and efficient school dismissal processes.
+
+**Author**: Solomon Anim (Solan)
+**Website**: [solangigs.com](https://solangigs.com)
+
+## Features
+
+- **Multi-user System**: Separate dashboards for parents, school staff, and riders
+- **QR Code Integration**: Streamlines student pickup and verification
+- **Real-time Updates**: Keep all parties informed about dismissal status
+- **Enhanced Security**: Digital verification system for student safety
+- **Efficient Operations**: Reduce wait times and streamline pickup operations
 
 ## Project info
 
@@ -36,23 +50,54 @@ npm i
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Converting to WordPress
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To convert this React application to a WordPress theme and plugin:
 
-**Use GitHub Codespaces**
+### Theme Conversion
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Create a WordPress theme directory structure with required files:
+   - `style.css` (with theme information)
+   - `functions.php`
+   - `index.php`
+   - Other template files (header.php, footer.php, etc.)
 
-## What technologies are used for this project?
+2. Build the React application:
+   ```
+   npm run build
+   ```
 
-This project is built with .
+3. Integrate the built files with WordPress:
+   - Enqueue scripts and styles in `functions.php`
+   - Create template files that load the React application
+
+### Plugin Conversion
+
+1. Create a WordPress plugin directory structure:
+   - Main plugin PHP file with plugin information
+   - Include necessary admin pages and functionality
+   - Add necessary hooks and filters
+
+2. Convert React components to PHP/WordPress:
+   - User roles and capabilities
+   - Database interactions
+   - Admin UI
+
+3. Ensure compatibility with Elementor:
+   - Create custom Elementor widgets
+   - Add necessary hooks for Elementor integration
+
+## Elementor Compatibility
+
+SchoolRider theme is designed to work seamlessly with Elementor:
+
+- Custom widgets for dismissal management
+- Styled elements matching the SchoolRider aesthetic
+- Compatible templates and sections
+
+## Technical Requirements
+
+This project is built with:
 
 - Vite
 - TypeScript
@@ -60,10 +105,13 @@ This project is built with .
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+## WordPress Requirements
 
-Simply open [Lovable](https://lovable.dev/projects/0ccb7893-f0e9-4e4b-8446-fe078b68fa5e) and click on Share -> Publish.
+- WordPress 5.9+
+- PHP 7.4+
+- MySQL 5.7+ or MariaDB 10.3+
+- Elementor 3.5+
 
-## I want to use a custom domain - is that possible?
+## License
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+All rights reserved. Contact the author for licensing information.

@@ -112,13 +112,18 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
             </Tabs>
           </CardContent>
           
-          <CardFooter className="flex flex-col">
+          <CardFooter className="flex flex-col space-y-4">
             <div className="text-center w-full">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <a href="#" className="text-primary hover:underline">
                   Sign up
                 </a>
+              </p>
+            </div>
+            <div className="text-center w-full pt-2 border-t">
+              <p className="text-xs text-muted-foreground">
+                SchoolRider Theme & Plugin by <a href="https://solangigs.com" className="text-primary hover:underline">Solomon Anim (Solan)</a>
               </p>
             </div>
           </CardFooter>
