@@ -5,7 +5,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 export enum UserRole {
   PARENT = "parent",
   SCHOOL = "school",
-  RIDER = "rider"
+  RIDER = "rider",
+  TEACHER = "teacher"
 }
 
 // Types
@@ -14,6 +15,7 @@ export interface Child {
   name: string;
   grade: string;
   school: string;
+  homeroom: string;
   qrCode: string;
 }
 
@@ -33,6 +35,13 @@ export interface ScheduleDay {
   time: string;
 }
 
+export interface Homeroom {
+  id: number;
+  name: string;
+  grade: string;
+  teacherId: number;
+}
+
 interface UserData {
   id: number;
   name: string;
@@ -41,6 +50,7 @@ interface UserData {
   children?: Child[];
   schedule?: ScheduleDay[];
   rides?: Ride[];
+  homerooms?: Homeroom[];
 }
 
 interface AppContextType {
@@ -64,8 +74,8 @@ const mockUsers: UserData[] = [
     email: "parent@example.com",
     role: UserRole.PARENT,
     children: [
-      { id: 1, name: "Alex Johnson", grade: "5th Grade", school: "Lincoln Elementary", qrCode: "/placeholder.svg" },
-      { id: 2, name: "Emma Johnson", grade: "3rd Grade", school: "Lincoln Elementary", qrCode: "/placeholder.svg" }
+      { id: 1, name: "Alex Johnson", grade: "5th Grade", school: "Lincoln Elementary", homeroom: "5A", qrCode: "/placeholder.svg" },
+      { id: 2, name: "Emma Johnson", grade: "3rd Grade", school: "Lincoln Elementary", homeroom: "3B", qrCode: "/placeholder.svg" }
     ],
     schedule: [
       { day: "Mon", enabled: true, time: "3:15 PM" },
@@ -91,6 +101,16 @@ const mockUsers: UserData[] = [
     name: "Driver",
     email: "rider@example.com",
     role: UserRole.RIDER
+  },
+  {
+    id: 4,
+    name: "Ms. Thompson",
+    email: "teacher@example.com",
+    role: UserRole.TEACHER,
+    homerooms: [
+      { id: 1, name: "5A", grade: "5th Grade", teacherId: 4 },
+      { id: 2, name: "5B", grade: "5th Grade", teacherId: 4 }
+    ]
   }
 ];
 

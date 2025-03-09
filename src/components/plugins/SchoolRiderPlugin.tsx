@@ -4,12 +4,13 @@ import { SchoolRiderLoginPage } from "./SchoolRiderLoginPage";
 import { ParentDashboard } from "./dashboards/ParentDashboard";
 import { SchoolDashboard } from "./dashboards/SchoolDashboard";
 import { RiderDashboard } from "./dashboards/RiderDashboard";
+import { TeacherDashboard } from "./dashboards/TeacherDashboard";
 import { useAppContext, UserRole } from "@/context/AppContext";
 
 export const SchoolRiderPlugin = () => {
   const { isAuthenticated, currentUser, logout } = useAppContext();
   
-  // Handle login/logout in the parent component
+  // Handle login in the parent component
   const handleLogin = (role: UserRole) => {
     // User is already authenticated through the context
     console.log(`User logged in as ${role}`);
@@ -26,6 +27,8 @@ export const SchoolRiderPlugin = () => {
         return <SchoolDashboard onLogout={logout} />;
       case UserRole.RIDER:
         return <RiderDashboard onLogout={logout} />;
+      case UserRole.TEACHER:
+        return <TeacherDashboard onLogout={logout} />;
       default:
         return null;
     }

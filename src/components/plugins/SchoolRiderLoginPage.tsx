@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { Car, School, User, Lock } from "lucide-react";
+import { Car, School, User, Lock, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { UserRole, useAppContext } from "@/context/AppContext";
 
@@ -62,7 +63,7 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
             <Car className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold">SchoolRider</h1>
-          <p className="text-muted-foreground">Safe & Efficient School Dismissal</p>
+          <p className="text-muted-foreground">Safe & Efficient School Dismissal System</p>
         </div>
         
         <Card className="border-t-4 border-t-primary shadow-lg">
@@ -75,7 +76,7 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
           
           <CardContent>
             <Tabs defaultValue={UserRole.PARENT} onValueChange={(value) => setUserType(value as UserRole)}>
-              <TabsList className="grid grid-cols-3 mb-6">
+              <TabsList className="grid grid-cols-4 mb-6">
                 <TabsTrigger value={UserRole.PARENT} className="flex items-center gap-2">
                   <User className="h-4 w-4" />
                   <span className="hidden sm:inline">Parent</span>
@@ -84,13 +85,17 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
                   <School className="h-4 w-4" />
                   <span className="hidden sm:inline">School</span>
                 </TabsTrigger>
+                <TabsTrigger value={UserRole.TEACHER} className="flex items-center gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  <span className="hidden sm:inline">Teacher</span>
+                </TabsTrigger>
                 <TabsTrigger value={UserRole.RIDER} className="flex items-center gap-2">
                   <Car className="h-4 w-4" />
                   <span className="hidden sm:inline">Rider</span>
                 </TabsTrigger>
               </TabsList>
               
-              {[UserRole.PARENT, UserRole.SCHOOL, UserRole.RIDER].map((type) => (
+              {[UserRole.PARENT, UserRole.SCHOOL, UserRole.TEACHER, UserRole.RIDER].map((type) => (
                 <TabsContent key={type} value={type}>
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div className="space-y-2">
@@ -143,6 +148,7 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
               <p className="font-medium">Demo Login Credentials:</p>
               <p><span className="text-muted-foreground">Parent:</span> parent@example.com</p>
               <p><span className="text-muted-foreground">School:</span> school@example.com</p>
+              <p><span className="text-muted-foreground">Teacher:</span> teacher@example.com</p>
               <p><span className="text-muted-foreground">Rider:</span> rider@example.com</p>
               <p className="text-xs text-muted-foreground mt-1">Use any password for demo purposes</p>
             </div>
@@ -159,7 +165,7 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
             </div>
             <div className="text-center w-full pt-2 border-t">
               <p className="text-xs text-muted-foreground">
-                SchoolRider Theme & Plugin by <a href="https://solangigs.com" className="text-primary hover:underline">Solomon Anim (Solan)</a>
+                SchoolRider - Safe Transportation Management System
               </p>
             </div>
           </CardFooter>

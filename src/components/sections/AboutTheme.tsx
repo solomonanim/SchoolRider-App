@@ -10,7 +10,10 @@ import {
   Smartphone, 
   Globe, 
   Database, 
-  PieChart
+  PieChart,
+  Users,
+  GraduationCap,
+  Car
 } from "lucide-react";
 
 export const AboutTheme = () => {
@@ -18,12 +21,12 @@ export const AboutTheme = () => {
     <section id="about" className="py-24 bg-secondary/50">
       <div className="container px-4 sm:px-6">
         <div className="text-center mb-16">
-          <Badge variant="outline" className="mb-4">WordPress Theme</Badge>
+          <Badge variant="outline" className="mb-4">School Dismissal System</Badge>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
             The Complete School Dismissal Solution
           </h2>
           <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-            SchoolRider is more than just a WordPress theme. It's a complete dismissal management system packaged as a theme and plugin bundle.
+            SchoolRider is a comprehensive platform that connects parents, schools, teachers, and drivers to ensure safe and efficient student transportation.
           </p>
         </div>
         
@@ -35,21 +38,9 @@ export const AboutTheme = () => {
                   <Zap className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Easy Installation</h3>
+                  <h3 className="text-xl font-semibold mb-1">Streamlined Dismissal</h3>
                   <p className="text-muted-foreground">
-                    Install the theme and plugins with a few clicks. Get up and running in minutes.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4 items-start">
-                <div className="bg-primary/10 p-3 rounded-lg text-primary">
-                  <Code className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-1">Developer Friendly</h3>
-                  <p className="text-muted-foreground">
-                    Clean, well-documented code that can be customized to your specific needs.
+                    Reduce wait times and traffic congestion with our organized pickup system.
                   </p>
                 </div>
               </div>
@@ -59,9 +50,21 @@ export const AboutTheme = () => {
                   <Lock className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Security Focused</h3>
+                  <h3 className="text-xl font-semibold mb-1">Enhanced Security</h3>
                   <p className="text-muted-foreground">
-                    Built with security best practices to protect student and parent data.
+                    QR verification ensures students are only released to authorized individuals.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex gap-4 items-start">
+                <div className="bg-primary/10 p-3 rounded-lg text-primary">
+                  <GraduationCap className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">Teacher Integration</h3>
+                  <p className="text-muted-foreground">
+                    Teachers maintain real-time awareness of student pickup status and homeroom management.
                   </p>
                 </div>
               </div>
@@ -71,87 +74,87 @@ export const AboutTheme = () => {
                   <Smartphone className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Mobile Optimized</h3>
+                  <h3 className="text-xl font-semibold mb-1">Mobile Access</h3>
                   <p className="text-muted-foreground">
-                    Beautiful, responsive design works perfectly on all devices.
+                    Parents and staff can manage everything from their smartphones for maximum convenience.
                   </p>
                 </div>
               </div>
             </div>
             
             <Button size="lg" className="mt-8 gap-2">
-              Download SchoolRider
+              Get Started with SchoolRider
               <Download className="h-5 w-5" />
             </Button>
           </div>
           
           <div className="bg-card rounded-xl border p-8 shadow-sm">
-            <h3 className="text-2xl font-bold mb-6">What's Included:</h3>
+            <h3 className="text-2xl font-bold mb-6">Comprehensive Platform:</h3>
             
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <Globe className="h-5 w-5 text-primary" />
+                <Users className="h-5 w-5 text-primary" />
                 <div>
-                  <h4 className="font-medium">WordPress Theme</h4>
-                  <p className="text-sm text-muted-foreground">Fully responsive, customizable WordPress theme</p>
+                  <h4 className="font-medium">Parent Portal</h4>
+                  <p className="text-sm text-muted-foreground">Schedule pickups and monitor your child's status</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
-                <Database className="h-5 w-5 text-primary" />
+                <School className="h-5 w-5 text-primary" />
                 <div>
-                  <h4 className="font-medium">SchoolRider Core Plugin</h4>
-                  <p className="text-sm text-muted-foreground">Main functionality including QR code system</p>
+                  <h4 className="font-medium">School Admin Dashboard</h4>
+                  <p className="text-sm text-muted-foreground">Manage dismissal process and view analytics</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
-                <Smartphone className="h-5 w-5 text-primary" />
+                <GraduationCap className="h-5 w-5 text-primary" />
                 <div>
-                  <h4 className="font-medium">Mobile App Integration</h4>
-                  <p className="text-sm text-muted-foreground">Connect with our SchoolRider mobile app</p>
+                  <h4 className="font-medium">Teacher Interface</h4>
+                  <p className="text-sm text-muted-foreground">Track homeroom students and confirm pickups</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3">
-                <PieChart className="h-5 w-5 text-primary" />
+                <Car className="h-5 w-5 text-primary" />
                 <div>
-                  <h4 className="font-medium">Analytics Plugin</h4>
-                  <p className="text-sm text-muted-foreground">Track and analyze dismissal efficiency metrics</p>
+                  <h4 className="font-medium">Driver App</h4>
+                  <p className="text-sm text-muted-foreground">Optimize routes and verify student identity</p>
                 </div>
               </div>
             </div>
             
             <div className="mt-8 pt-6 border-t">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium">SchoolRider Core</span>
-                <Badge>Free</Badge>
+                <span className="font-medium">Basic Plan</span>
+                <Badge>Free Trial</Badge>
               </div>
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium">Premium Plugins Bundle</span>
-                <span className="text-lg font-bold">$99/year</span>
+                <span className="font-medium">Premium Plan</span>
+                <span className="text-lg font-bold">$199/month</span>
               </div>
               <p className="text-sm text-muted-foreground mt-4">
-                Includes 1 year of updates and premium support
+                Includes unlimited users, priority support, and custom integrations
               </p>
             </div>
           </div>
         </div>
         
         <div className="mt-20 text-center">
-          <h3 className="text-2xl font-bold mb-4">Compatible with Popular WordPress Plugins</h3>
+          <h3 className="text-2xl font-bold mb-4">Trusted by Schools Nationwide</h3>
           <div className="flex flex-wrap justify-center gap-8 mt-8">
             <div className="flex items-center justify-center bg-card p-4 rounded-lg border w-40 h-20">
-              <span className="font-medium">WooCommerce</span>
+              <span className="font-medium">Lincoln Elementary</span>
             </div>
             <div className="flex items-center justify-center bg-card p-4 rounded-lg border w-40 h-20">
-              <span className="font-medium">Elementor</span>
+              <span className="font-medium">Washington High</span>
             </div>
             <div className="flex items-center justify-center bg-card p-4 rounded-lg border w-40 h-20">
-              <span className="font-medium">Contact Form 7</span>
+              <span className="font-medium">Jefferson Academy</span>
             </div>
             <div className="flex items-center justify-center bg-card p-4 rounded-lg border w-40 h-20">
-              <span className="font-medium">Yoast SEO</span>
+              <span className="font-medium">Roosevelt School</span>
             </div>
           </div>
         </div>
