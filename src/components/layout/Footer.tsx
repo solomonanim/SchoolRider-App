@@ -89,7 +89,7 @@ export const Footer = () => {
       
       <div className="container mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-sm text-muted-foreground">
-          © {currentYear} SchoolRider Theme by <a href="https://solangigs.com" className="hover:text-primary transition-colors">Solomon Anim (Solan)</a>. All rights reserved.
+          © {currentYear} SchoolRider by <a href="https://solangigs.com" className="hover:text-primary transition-colors">Solangigs</a>. All rights reserved.
         </p>
         <div className="flex gap-6">
           <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
