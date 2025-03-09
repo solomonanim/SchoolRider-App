@@ -1,16 +1,10 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { SchoolRiderLoginPage } from "./SchoolRiderLoginPage";
 import { ParentDashboard } from "./dashboards/ParentDashboard";
 import { SchoolDashboard } from "./dashboards/SchoolDashboard";
 import { RiderDashboard } from "./dashboards/RiderDashboard";
-import { useAppContext } from "@/context/AppContext";
-
-export enum UserRole {
-  PARENT = "parent",
-  SCHOOL = "school",
-  RIDER = "rider"
-}
+import { useAppContext, UserRole } from "@/context/AppContext";
 
 export const SchoolRiderPlugin = () => {
   const { isAuthenticated, currentUser, logout } = useAppContext();

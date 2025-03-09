@@ -1,6 +1,12 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { UserRole } from "@/components/plugins/SchoolRiderPlugin";
+
+// Define UserRole enum directly in this file to avoid circular dependencies
+export enum UserRole {
+  PARENT = "parent",
+  SCHOOL = "school",
+  RIDER = "rider"
+}
 
 // Types
 export interface Child {
