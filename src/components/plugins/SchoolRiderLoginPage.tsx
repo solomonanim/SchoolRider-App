@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,8 +18,7 @@ import {
 } from "@/components/ui/tabs";
 import { Car, School, User, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { UserRole } from "./SchoolRiderPlugin";
-import { useAppContext } from "@/context/AppContext";
+import { UserRole, useAppContext } from "@/context/AppContext";
 
 interface SchoolRiderLoginPageProps {
   onLogin: (role: UserRole) => void;
