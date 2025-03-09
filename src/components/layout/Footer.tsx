@@ -17,7 +17,7 @@ export const Footer = () => {
             <span className="font-display font-semibold text-xl">SchoolRider</span>
           </div>
           <p className="text-muted-foreground text-sm max-w-xs">
-            A comprehensive WordPress solution for safe and efficient school dismissal processes.
+            A comprehensive solution for safe and efficient school dismissal processes.
           </p>
           <div className="flex space-x-4">
             <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
