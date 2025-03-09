@@ -13,7 +13,8 @@ import {
   PieChart,
   Users,
   GraduationCap,
-  Car
+  Car,
+  School
 } from "lucide-react";
 
 export const AboutTheme = () => {
