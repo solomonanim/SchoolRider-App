@@ -20,6 +20,7 @@ import {
 import { Car, School, User, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { UserRole } from "./SchoolRiderPlugin";
+import { useAppContext } from "@/context/AppContext";
 
 interface SchoolRiderLoginPageProps {
   onLogin: (role: UserRole) => void;
@@ -27,16 +28,32 @@ interface SchoolRiderLoginPageProps {
 
 export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLogin }) => {
   const [userType, setUserType] = useState<UserRole>(UserRole.PARENT);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { login } = useAppContext();
   
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // This would connect to WordPress authentication in a real implementation
-    toast({
-      title: "Login Successful",
-      description: `You have logged in as a ${userType}`,
-    });
-    onLogin(userType);
+    setIsLoading(true);
+    
+    try {
+      await login(email, password, userType);
+      toast({
+        title: "Login Successful",
+        description: `You have logged in as a ${userType}`,
+      });
+      onLogin(userType);
+    } catch (error) {
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials. Try parent@example.com with any password.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -83,8 +100,10 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
                       <Input 
                         id={`${type}-email`} 
                         type="email" 
-                        placeholder="your@email.com" 
+                        placeholder={type === UserRole.PARENT ? "parent@example.com" : `${type}@example.com`}
                         required 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
@@ -101,15 +120,34 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
                         id={`${type}-password`} 
                         type="password" 
                         required 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      <Lock className="mr-2 h-4 w-4" /> Sign In
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? (
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          Signing In...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Lock className="h-4 w-4" /> Sign In
+                        </span>
+                      )}
                     </Button>
                   </form>
                 </TabsContent>
               ))}
             </Tabs>
+            
+            <div className="mt-4 p-3 bg-muted/50 rounded-md text-sm">
+              <p className="font-medium">Demo Login Credentials:</p>
+              <p><span className="text-muted-foreground">Parent:</span> parent@example.com</p>
+              <p><span className="text-muted-foreground">School:</span> school@example.com</p>
+              <p><span className="text-muted-foreground">Rider:</span> rider@example.com</p>
+              <p className="text-xs text-muted-foreground mt-1">Use any password for demo purposes</p>
+            </div>
           </CardContent>
           
           <CardFooter className="flex flex-col space-y-4">

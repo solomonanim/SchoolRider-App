@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { SchoolRiderLoginPage } from "./SchoolRiderLoginPage";
 import { ParentDashboard } from "./dashboards/ParentDashboard";
 import { SchoolDashboard } from "./dashboards/SchoolDashboard";
 import { RiderDashboard } from "./dashboards/RiderDashboard";
+import { useAppContext } from "@/context/AppContext";
 
 export enum UserRole {
   PARENT = "parent",
@@ -12,29 +13,33 @@ export enum UserRole {
 }
 
 export const SchoolRiderPlugin = () => {
-  // In a real WordPress plugin, this would be connected to WP authentication
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState<UserRole>(UserRole.PARENT);
+  const { isAuthenticated, currentUser, logout } = useAppContext();
   
-  // For demo purposes, we're simulating login
+  // Handle login/logout in the parent component
   const handleLogin = (role: UserRole) => {
-    setUserRole(role);
-    setIsLoggedIn(true);
+    // User is already authenticated through the context
+    console.log(`User logged in as ${role}`);
   };
   
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  // Determine which dashboard to render based on user role
+  const renderDashboard = () => {
+    if (!currentUser) return null;
+    
+    switch (currentUser.role) {
+      case UserRole.PARENT:
+        return <ParentDashboard onLogout={logout} />;
+      case UserRole.SCHOOL:
+        return <SchoolDashboard onLogout={logout} />;
+      case UserRole.RIDER:
+        return <RiderDashboard onLogout={logout} />;
+      default:
+        return null;
+    }
   };
   
-  if (!isLoggedIn) {
+  if (!isAuthenticated) {
     return <SchoolRiderLoginPage onLogin={handleLogin} />;
   }
   
-  return (
-    <div>
-      {userRole === UserRole.PARENT && <ParentDashboard onLogout={handleLogout} />}
-      {userRole === UserRole.SCHOOL && <SchoolDashboard onLogout={handleLogout} />}
-      {userRole === UserRole.RIDER && <RiderDashboard onLogout={handleLogout} />}
-    </div>
-  );
+  return renderDashboard();
 };
