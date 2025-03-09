@@ -27,7 +27,7 @@ import {
   LogOut,
   ListChecks
 } from "lucide-react";
-import { useAppContext } from "@/context/AppContext";
+import { useAppContext, Homeroom } from "@/context/AppContext";
 import { useToast } from "@/hooks/use-toast";
 
 interface TeacherDashboardProps {
@@ -42,29 +42,47 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onLogout }) 
   // Extract teacher's homerooms
   const homerooms = currentUser?.homerooms || [];
   
-  // Mock data for students in homerooms
-  const studentsInHomeroom = [
+  // Mock data for students in homerooms - in a real app, this would be filtered by the backend
+  const allStudents = [
     { id: 1, name: "Alex Johnson", grade: "5th Grade", homeroom: "5A", status: "In School", nextRide: "3:15 PM Pickup" },
     { id: 2, name: "Emma Wilson", grade: "5th Grade", homeroom: "5A", status: "In School", nextRide: "3:15 PM Pickup" },
     { id: 3, name: "Noah Brown", grade: "5th Grade", homeroom: "5A", status: "In School", nextRide: "3:20 PM Pickup" },
     { id: 4, name: "Olivia Garcia", grade: "5th Grade", homeroom: "5A", status: "Absent", nextRide: "N/A" },
     { id: 5, name: "James Davis", grade: "5th Grade", homeroom: "5B", status: "In School", nextRide: "3:15 PM Pickup" },
     { id: 6, name: "Sophia Miller", grade: "5th Grade", homeroom: "5B", status: "In School", nextRide: "3:15 PM Pickup" },
+    { id: 7, name: "Benjamin Taylor", grade: "3rd Grade", homeroom: "3B", status: "In School", nextRide: "3:15 PM Pickup" },
+    { id: 8, name: "Ava Martinez", grade: "3rd Grade", homeroom: "3B", status: "Absent", nextRide: "N/A" },
   ];
   
-  // Upcoming pickups for today (mock data)
-  const upcomingPickups = [
-    { id: 1, studentId: 1, time: "3:15 PM", rider: "Jane Johnson (Mother)", status: "Confirmed" },
-    { id: 2, studentId: 2, time: "3:15 PM", rider: "Tom Wilson (Father)", status: "Confirmed" },
-    { id: 3, studentId: 3, time: "3:20 PM", rider: "Sarah Brown (Mother)", status: "Pending" },
-    { id: 5, studentId: 5, time: "3:15 PM", rider: "Daniel Davis (Father)", status: "Confirmed" },
-    { id: 6, studentId: 6, time: "3:15 PM", rider: "Paula Miller (Mother)", status: "Confirmed" },
-  ];
+  // Function to get students for teacher's homerooms ONLY
+  const getStudentsByTeacherHomerooms = () => {
+    if (!homerooms || homerooms.length === 0) return [];
+    
+    // Get homeroom names for this teacher
+    const homeroomNames = homerooms.map(h => h.name);
+    
+    // Filter students who are in the teacher's homerooms
+    return allStudents.filter(student => homeroomNames.includes(student.homeroom));
+  };
+  
+  // Get filtered students
+  const studentsInTeacherHomerooms = getStudentsByTeacherHomerooms();
   
   // Function to get students for a specific homeroom
   const getStudentsByHomeroom = (homeroomName: string) => {
-    return studentsInHomeroom.filter(student => student.homeroom === homeroomName);
+    return studentsInTeacherHomerooms.filter(student => student.homeroom === homeroomName);
   };
+  
+  // Upcoming pickups for students in teacher's homerooms only
+  const upcomingPickups = studentsInTeacherHomerooms
+    .filter(student => student.status === "In School" && student.nextRide !== "N/A")
+    .map(student => ({
+      id: student.id,
+      studentId: student.id,
+      time: student.nextRide.split(" ")[0],
+      rider: ["Jane Johnson (Mother)", "Tom Wilson (Father)", "Sarah Brown (Mother)", "Daniel Davis (Father)", "Paula Miller (Mother)"][student.id % 5],
+      status: Math.random() > 0.3 ? "Confirmed" : "Pending"
+    }));
   
   // Track attendance function
   const markAttendance = (studentId: number, status: string) => {
@@ -87,7 +105,14 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onLogout }) 
       <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
-          <p className="text-muted-foreground">Manage your homerooms and monitor student pickups</p>
+          <p className="text-muted-foreground">
+            Manage your homerooms and monitor student pickups
+            {homerooms.length > 0 && (
+              <span className="ml-1">
+                ({homerooms.map(h => h.name).join(", ")})
+              </span>
+            )}
+          </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" className="gap-2">
@@ -161,6 +186,12 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onLogout }) 
                         </Badge>
                       </div>
                     ))}
+                    
+                    {getStudentsByHomeroom(homeroom.name).length === 0 && (
+                      <div className="text-center p-4">
+                        <p className="text-muted-foreground">No students in this homeroom</p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -188,49 +219,56 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onLogout }) 
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {upcomingPickups.map((pickup) => {
-                  const student = studentsInHomeroom.find(s => s.id === pickup.studentId);
-                  return (
-                    <div key={pickup.id} className="flex items-center justify-between p-3 border rounded-md">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium">{student?.name}</p>
-                          <Badge variant="outline">{student?.homeroom}</Badge>
+              {upcomingPickups.length > 0 ? (
+                <div className="space-y-4">
+                  {upcomingPickups.map((pickup) => {
+                    const student = studentsInTeacherHomerooms.find(s => s.id === pickup.studentId);
+                    return student ? (
+                      <div key={pickup.id} className="flex items-center justify-between p-3 border rounded-md">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{student?.name}</p>
+                            <Badge variant="outline">{student?.homeroom}</Badge>
+                          </div>
+                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                            <Clock className="h-3 w-3" />
+                            <span>{pickup.time}</span>
+                            <span>•</span>
+                            <User className="h-3 w-3" />
+                            <span>{pickup.rider}</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Clock className="h-3 w-3" />
-                          <span>{pickup.time}</span>
-                          <span>•</span>
-                          <User className="h-3 w-3" />
-                          <span>{pickup.rider}</span>
+                        <div>
+                          <Button 
+                            size="sm" 
+                            variant={pickup.status === "Confirmed" ? "outline" : "default"}
+                            className="gap-2"
+                            onClick={() => confirmPickup(pickup.id)}
+                            disabled={pickup.status === "Confirmed"}
+                          >
+                            {pickup.status === "Confirmed" ? (
+                              <>
+                                <CheckCircle className="h-3 w-3" />
+                                <span>Confirmed</span>
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle className="h-3 w-3" />
+                                <span>Confirm</span>
+                              </>
+                            )}
+                          </Button>
                         </div>
                       </div>
-                      <div>
-                        <Button 
-                          size="sm" 
-                          variant={pickup.status === "Confirmed" ? "outline" : "default"}
-                          className="gap-2"
-                          onClick={() => confirmPickup(pickup.id)}
-                          disabled={pickup.status === "Confirmed"}
-                        >
-                          {pickup.status === "Confirmed" ? (
-                            <>
-                              <CheckCircle className="h-3 w-3" />
-                              <span>Confirmed</span>
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle className="h-3 w-3" />
-                              <span>Confirm</span>
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    ) : null;
+                  })}
+                </div>
+              ) : (
+                <div className="text-center p-6">
+                  <Car className="h-12 w-12 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-muted-foreground">No pickups scheduled for your students today</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -242,47 +280,61 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onLogout }) 
               <CardDescription>Mark and track student attendance</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {homerooms.map((homeroom) => (
-                  <div key={homeroom.id} className="space-y-3">
-                    <h3 className="font-medium text-lg flex items-center gap-2">
-                      <GraduationCap className="h-5 w-5 text-primary" />
-                      {homeroom.name} Attendance
-                    </h3>
-                    
-                    <div className="space-y-2">
-                      {getStudentsByHomeroom(homeroom.name).map((student) => (
-                        <div key={student.id} className="flex items-center justify-between p-3 border rounded-md">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                              <User className="h-4 w-4 text-muted-foreground" />
+              {homerooms.length > 0 ? (
+                <div className="space-y-4">
+                  {homerooms.map((homeroom) => (
+                    <div key={homeroom.id} className="space-y-3">
+                      <h3 className="font-medium text-lg flex items-center gap-2">
+                        <GraduationCap className="h-5 w-5 text-primary" />
+                        {homeroom.name} Attendance
+                      </h3>
+                      
+                      <div className="space-y-2">
+                        {getStudentsByHomeroom(homeroom.name).map((student) => (
+                          <div key={student.id} className="flex items-center justify-between p-3 border rounded-md">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
+                                <User className="h-4 w-4 text-muted-foreground" />
+                              </div>
+                              <p className="font-medium">{student.name}</p>
                             </div>
-                            <p className="font-medium">{student.name}</p>
+                            <div className="flex gap-2">
+                              <Button 
+                                size="sm" 
+                                variant={student.status === "In School" ? "default" : "outline"} 
+                                className="px-3"
+                                onClick={() => markAttendance(student.id, "In School")}
+                              >
+                                Present
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant={student.status === "Absent" ? "destructive" : "outline"} 
+                                className="px-3"
+                                onClick={() => markAttendance(student.id, "Absent")}
+                              >
+                                Absent
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex gap-2">
-                            <Button 
-                              size="sm" 
-                              variant={student.status === "In School" ? "default" : "outline"} 
-                              className="px-3"
-                              onClick={() => markAttendance(student.id, "In School")}
-                            >
-                              Present
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant={student.status === "Absent" ? "destructive" : "outline"} 
-                              className="px-3"
-                              onClick={() => markAttendance(student.id, "Absent")}
-                            >
-                              Absent
-                            </Button>
+                        ))}
+                        
+                        {getStudentsByHomeroom(homeroom.name).length === 0 && (
+                          <div className="text-center p-4">
+                            <p className="text-muted-foreground">No students in this homeroom</p>
                           </div>
-                        </div>
-                      ))}
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center p-6">
+                  <ListChecks className="h-12 w-12 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-muted-foreground">No homerooms assigned yet</p>
+                  <p className="text-sm text-muted-foreground">Contact your school administrator</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

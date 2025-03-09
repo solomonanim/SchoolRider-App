@@ -35,11 +35,26 @@ export interface ScheduleDay {
   time: string;
 }
 
+export interface Teacher {
+  id: number;
+  name: string;
+  email: string;
+  schoolId: number;
+  homeroomIds: number[];
+}
+
 export interface Homeroom {
   id: number;
   name: string;
   grade: string;
   teacherId: number;
+  schoolId: number;
+}
+
+export interface School {
+  id: number;
+  name: string;
+  address: string;
 }
 
 interface UserData {
@@ -47,10 +62,13 @@ interface UserData {
   name: string;
   email: string;
   role: UserRole;
+  schoolId?: number;
   children?: Child[];
   schedule?: ScheduleDay[];
   rides?: Ride[];
   homerooms?: Homeroom[];
+  school?: School;
+  teachers?: Teacher[];
 }
 
 interface AppContextType {
@@ -61,12 +79,31 @@ interface AppContextType {
   addChild: (child: Omit<Child, "id" | "qrCode">) => void;
   requestRide: (childId: number, date: string, time: string, type: "pickup" | "dropoff") => void;
   updateSchedule: (daySchedule: ScheduleDay) => void;
+  addHomeroom: (homeroom: Omit<Homeroom, "id">) => void;
+  addTeacher: (teacher: Omit<Teacher, "id">) => void;
+  assignTeacherToHomeroom: (teacherId: number, homeroomId: number) => void;
 }
 
 // Create the context
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 // Mock data
+const mockSchools: School[] = [
+  { id: 1, name: "Lincoln Elementary", address: "123 Education Lane" },
+  { id: 2, name: "Washington Middle School", address: "456 Learning Ave" }
+];
+
+const mockTeachers: Teacher[] = [
+  { id: 4, name: "Ms. Thompson", email: "teacher@example.com", schoolId: 1, homeroomIds: [1, 2] },
+  { id: 5, name: "Mr. Rodriguez", email: "rodriguez@example.com", schoolId: 1, homeroomIds: [3] }
+];
+
+const mockHomerooms: Homeroom[] = [
+  { id: 1, name: "5A", grade: "5th Grade", teacherId: 4, schoolId: 1 },
+  { id: 2, name: "5B", grade: "5th Grade", teacherId: 4, schoolId: 1 },
+  { id: 3, name: "3B", grade: "3rd Grade", teacherId: 5, schoolId: 1 }
+];
+
 const mockUsers: UserData[] = [
   {
     id: 1,
@@ -94,7 +131,11 @@ const mockUsers: UserData[] = [
     id: 2,
     name: "School Admin",
     email: "school@example.com",
-    role: UserRole.SCHOOL
+    role: UserRole.SCHOOL,
+    schoolId: 1,
+    school: mockSchools[0],
+    teachers: mockTeachers.filter(t => t.schoolId === 1),
+    homerooms: mockHomerooms.filter(h => h.schoolId === 1)
   },
   {
     id: 3,
@@ -107,10 +148,16 @@ const mockUsers: UserData[] = [
     name: "Ms. Thompson",
     email: "teacher@example.com",
     role: UserRole.TEACHER,
-    homerooms: [
-      { id: 1, name: "5A", grade: "5th Grade", teacherId: 4 },
-      { id: 2, name: "5B", grade: "5th Grade", teacherId: 4 }
-    ]
+    schoolId: 1,
+    homerooms: mockHomerooms.filter(h => h.teacherId === 4)
+  },
+  {
+    id: 5,
+    name: "Mr. Rodriguez",
+    email: "rodriguez@example.com",
+    role: UserRole.TEACHER,
+    schoolId: 1,
+    homerooms: mockHomerooms.filter(h => h.teacherId === 5)
   }
 ];
 
@@ -213,6 +260,73 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem("schoolrider_user", JSON.stringify(updatedUser));
   };
 
+  // Add homeroom function (for school admin)
+  const addHomeroom = (homeroom: Omit<Homeroom, "id">) => {
+    if (!currentUser || currentUser.role !== UserRole.SCHOOL) return;
+    
+    const newHomeroom: Homeroom = {
+      ...homeroom,
+      id: Date.now()
+    };
+    
+    const updatedUser = {
+      ...currentUser,
+      homerooms: [...(currentUser.homerooms || []), newHomeroom]
+    };
+    
+    setCurrentUser(updatedUser);
+    localStorage.setItem("schoolrider_user", JSON.stringify(updatedUser));
+  };
+
+  // Add teacher function (for school admin)
+  const addTeacher = (teacher: Omit<Teacher, "id">) => {
+    if (!currentUser || currentUser.role !== UserRole.SCHOOL) return;
+    
+    const newTeacher: Teacher = {
+      ...teacher,
+      id: Date.now(),
+      homeroomIds: []
+    };
+    
+    const updatedUser = {
+      ...currentUser,
+      teachers: [...(currentUser.teachers || []), newTeacher]
+    };
+    
+    setCurrentUser(updatedUser);
+    localStorage.setItem("schoolrider_user", JSON.stringify(updatedUser));
+  };
+
+  // Assign teacher to homeroom function (for school admin)
+  const assignTeacherToHomeroom = (teacherId: number, homeroomId: number) => {
+    if (!currentUser || currentUser.role !== UserRole.SCHOOL) return;
+    
+    // Update homeroom's teacherId
+    const updatedHomerooms = currentUser.homerooms?.map(homeroom => 
+      homeroom.id === homeroomId ? { ...homeroom, teacherId } : homeroom
+    ) || [];
+    
+    // Update teacher's homeroomIds
+    const updatedTeachers = currentUser.teachers?.map(teacher => {
+      if (teacher.id === teacherId) {
+        return {
+          ...teacher,
+          homeroomIds: [...teacher.homeroomIds, homeroomId]
+        };
+      }
+      return teacher;
+    }) || [];
+    
+    const updatedUser = {
+      ...currentUser,
+      homerooms: updatedHomerooms,
+      teachers: updatedTeachers
+    };
+    
+    setCurrentUser(updatedUser);
+    localStorage.setItem("schoolrider_user", JSON.stringify(updatedUser));
+  };
+
   const value = {
     isAuthenticated,
     currentUser,
@@ -220,7 +334,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     logout,
     addChild,
     requestRide,
-    updateSchedule
+    updateSchedule,
+    addHomeroom,
+    addTeacher,
+    assignTeacherToHomeroom
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
