@@ -20,6 +20,7 @@ import {
 import { Car, School, User, Lock, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { UserRole, useAppContext } from "@/context/AppContext";
+import { Link } from "react-router-dom";
 
 interface SchoolRiderLoginPageProps {
   onLogin: (role: UserRole) => void;
@@ -51,7 +52,7 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({
     } catch (error) {
       toast({
         title: "Login Failed",
-        description: "Invalid credentials. Try parent@example.com with any password.",
+        description: "Invalid email or password",
         variant: "destructive",
       });
     } finally {
@@ -63,11 +64,13 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-background p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="mx-auto w-16 h-16 mb-4 bg-primary rounded-2xl flex items-center justify-center">
-            <Car className="h-8 w-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold">SchoolRider</h1>
-          <p className="text-muted-foreground">Safe & Efficient School Dismissal System</p>
+          <Link to="/">
+            <div className="mx-auto w-16 h-16 mb-4 bg-primary rounded-2xl flex items-center justify-center cursor-pointer">
+              <Car className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold">SchoolRider</h1>
+            <p className="text-muted-foreground">Safe & Efficient School Dismissal System</p>
+          </Link>
         </div>
         
         <Card className="border-t-4 border-t-primary shadow-lg">
@@ -107,7 +110,7 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({
                       <Input 
                         id={`${type}-email`} 
                         type="email" 
-                        placeholder={type === UserRole.PARENT ? "parent@example.com" : `${type}@example.com`}
+                        placeholder="Enter your email"
                         required 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -147,15 +150,6 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({
                 </TabsContent>
               ))}
             </Tabs>
-            
-            <div className="mt-4 p-3 bg-muted/50 rounded-md text-sm">
-              <p className="font-medium">Demo Login Credentials:</p>
-              <p><span className="text-muted-foreground">Parent:</span> parent@example.com</p>
-              <p><span className="text-muted-foreground">School:</span> school@example.com</p>
-              <p><span className="text-muted-foreground">Teacher:</span> teacher@example.com</p>
-              <p><span className="text-muted-foreground">Rider:</span> rider@example.com</p>
-              <p className="text-xs text-muted-foreground mt-1">Use any password for demo purposes</p>
-            </div>
           </CardContent>
           
           <CardFooter className="flex flex-col space-y-4">

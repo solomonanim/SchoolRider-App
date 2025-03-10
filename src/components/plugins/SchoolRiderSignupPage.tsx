@@ -22,6 +22,7 @@ import { UserRole, useAppContext, Child } from "@/context/AppContext";
 import { CountrySelect } from "@/components/ui/country-select";
 import { SchoolSelect } from "@/components/ui/school-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Link } from "react-router-dom";
 
 interface SchoolRiderSignupPageProps {
   onLogin: (role: UserRole) => void;
@@ -81,6 +82,7 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
   }>>([{ name: "", grade: "", schoolId: "", id: Date.now() }]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   const handleSchoolFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -136,6 +138,16 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
       return;
     }
 
+    if (!acceptTerms) {
+      toast({
+        title: "Terms and Privacy Policy",
+        description: "You must accept the Terms and Privacy Policy to continue",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       await registerSchool({
         name: schoolForm.name,
@@ -183,6 +195,16 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
       toast({
         title: "School Required",
         description: "Please select a school",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (!acceptTerms) {
+      toast({
+        title: "Terms and Privacy Policy",
+        description: "You must accept the Terms and Privacy Policy to continue",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -245,6 +267,16 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
       return;
     }
 
+    if (!acceptTerms) {
+      toast({
+        title: "Terms and Privacy Policy",
+        description: "You must accept the Terms and Privacy Policy to continue",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       await registerParent({
         name: parentForm.name,
@@ -281,11 +313,13 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-background p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="mx-auto w-16 h-16 mb-4 bg-primary rounded-2xl flex items-center justify-center">
-            <Car className="h-8 w-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold">SchoolRider</h1>
-          <p className="text-muted-foreground">Safe & Efficient School Dismissal System</p>
+          <Link to="/">
+            <div className="mx-auto w-16 h-16 mb-4 bg-primary rounded-2xl flex items-center justify-center cursor-pointer">
+              <Car className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold">SchoolRider</h1>
+            <p className="text-muted-foreground">Safe & Efficient School Dismissal System</p>
+          </Link>
         </div>
         
         <Card className="border-t-4 border-t-primary shadow-lg">
@@ -405,6 +439,22 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
                         placeholder="https://school.edu" 
                       />
                     </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-2 pt-2">
+                    <input
+                      type="checkbox"
+                      id="school-terms"
+                      className="mt-0.5"
+                      checked={acceptTerms}
+                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      required
+                    />
+                    <label htmlFor="school-terms" className="text-xs text-muted-foreground">
+                      By creating an account, you agree to our{" "}
+                      <a href="/terms" className="text-primary hover:underline" target="_blank">Terms of Service</a> and{" "}
+                      <a href="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</a>
+                    </label>
                   </div>
                   
                   <Button type="submit" className="w-full" disabled={isLoading}>
@@ -534,6 +584,22 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+                  
+                  <div className="flex items-start space-x-2 pt-2">
+                    <input
+                      type="checkbox"
+                      id="teacher-terms"
+                      className="mt-0.5"
+                      checked={acceptTerms}
+                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      required
+                    />
+                    <label htmlFor="teacher-terms" className="text-xs text-muted-foreground">
+                      By creating an account, you agree to our{" "}
+                      <a href="/terms" className="text-primary hover:underline" target="_blank">Terms of Service</a> and{" "}
+                      <a href="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</a>
+                    </label>
                   </div>
                   
                   <Button type="submit" className="w-full" disabled={isLoading}>
@@ -710,6 +776,22 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
                         </div>
                       </div>
                     ))}
+                  </div>
+                  
+                  <div className="flex items-start space-x-2 pt-2">
+                    <input
+                      type="checkbox"
+                      id="parent-terms"
+                      className="mt-0.5"
+                      checked={acceptTerms}
+                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      required
+                    />
+                    <label htmlFor="parent-terms" className="text-xs text-muted-foreground">
+                      By creating an account, you agree to our{" "}
+                      <a href="/terms" className="text-primary hover:underline" target="_blank">Terms of Service</a> and{" "}
+                      <a href="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</a>
+                    </label>
                   </div>
                   
                   <Button type="submit" className="w-full" disabled={isLoading}>
