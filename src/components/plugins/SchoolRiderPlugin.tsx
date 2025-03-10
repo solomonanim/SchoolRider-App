@@ -1,6 +1,7 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { SchoolRiderLoginPage } from "./SchoolRiderLoginPage";
+import { SchoolRiderSignupPage } from "./SchoolRiderSignupPage";
 import { ParentDashboard } from "./dashboards/ParentDashboard";
 import { SchoolDashboard } from "./dashboards/SchoolDashboard";
 import { RiderDashboard } from "./dashboards/RiderDashboard";
@@ -9,11 +10,22 @@ import { useAppContext, UserRole } from "@/context/AppContext";
 
 export const SchoolRiderPlugin = () => {
   const { isAuthenticated, currentUser, logout } = useAppContext();
+  const [showSignup, setShowSignup] = useState(false);
   
   // Handle login in the parent component
   const handleLogin = (role: UserRole) => {
     // User is already authenticated through the context
     console.log(`User logged in as ${role}`);
+  };
+  
+  // Handle switching to signup
+  const handleSwitchToSignup = () => {
+    setShowSignup(true);
+  };
+  
+  // Handle switching to login
+  const handleSwitchToLogin = () => {
+    setShowSignup(false);
   };
   
   // Determine which dashboard to render based on user role
@@ -35,7 +47,9 @@ export const SchoolRiderPlugin = () => {
   };
   
   if (!isAuthenticated) {
-    return <SchoolRiderLoginPage onLogin={handleLogin} />;
+    return showSignup ? 
+      <SchoolRiderSignupPage onLogin={handleLogin} onSwitchToLogin={handleSwitchToLogin} /> : 
+      <SchoolRiderLoginPage onLogin={handleLogin} onSwitchToSignup={handleSwitchToSignup} />;
   }
   
   return renderDashboard();

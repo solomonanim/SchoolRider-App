@@ -23,9 +23,13 @@ import { UserRole, useAppContext } from "@/context/AppContext";
 
 interface SchoolRiderLoginPageProps {
   onLogin: (role: UserRole) => void;
+  onSwitchToSignup: () => void;
 }
 
-export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLogin }) => {
+export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ 
+  onLogin, 
+  onSwitchToSignup 
+}) => {
   const [userType, setUserType] = useState<UserRole>(UserRole.PARENT);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -158,9 +162,13 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({ onLo
             <div className="text-center w-full">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <a href="#" className="text-primary hover:underline">
+                <button 
+                  type="button"
+                  onClick={onSwitchToSignup}
+                  className="text-primary hover:underline bg-transparent p-0 border-none cursor-pointer"
+                >
                   Sign up
-                </a>
+                </button>
               </p>
             </div>
             <div className="text-center w-full pt-2 border-t">
