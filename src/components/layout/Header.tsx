@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,10 +7,8 @@ import { Link } from "react-router-dom";
 
 const navItems = [
   { title: "Features", href: "#features" },
-  { title: "Showcase", href: "#showcase" },
-  { title: "Testimonials", href: "#testimonials" },
-  { title: "About", href: "#about" },
-  { title: "Contact", href: "#contact" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
   { title: "Blog", href: "/blog" },
   { title: "FAQ", href: "/faq" },
   { title: "Documentation", href: "/docs" },

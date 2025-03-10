@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, Mail, MessageSquare, User, School } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 export const ContactForm = () => {
   const { toast } = useToast();
@@ -115,8 +116,8 @@ export const ContactForm = () => {
           
           <div className="mt-8 text-center text-sm text-muted-foreground">
             By submitting this form, you agree to our{" "}
-            <a href="#" className="underline hover:text-primary">Terms of Service</a> and{" "}
-            <a href="#" className="underline hover:text-primary">Privacy Policy</a>.
+            <Link to="/terms-conditions" className="underline hover:text-primary">Terms of Service</Link> and{" "}
+            <Link to="/privacy" className="underline hover:text-primary">Privacy Policy</Link>.
           </div>
         </div>
       </div>
