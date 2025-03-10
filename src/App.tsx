@@ -17,6 +17,7 @@ import Tutorials from "./pages/Tutorials";
 import Changelog from "./pages/Changelog";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Features from "./pages/Features";
 
 const queryClient = new QueryClient();
 

@@ -28,7 +28,7 @@ const About = () => {
               </div>
               <div className="rounded-xl overflow-hidden shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=800&q=80" 
+                  src="https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&w=800&q=80" 
                   alt="Diverse group of educators and team members" 
                   className="w-full h-full object-cover" 
                 />
@@ -55,7 +55,7 @@ const About = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div className="order-2 md:order-1 rounded-xl overflow-hidden shadow-xl">
                   <img 
-                    src="https://images.unsplash.com/photo-1522069213448-443a614da9b6?auto=format&fit=crop&w=800&q=80" 
+                    src="https://images.unsplash.com/photo-1517164850305-99a3e65bb47e?auto=format&fit=crop&w=800&q=80" 
                     alt="Students in a classroom setting" 
                     className="w-full h-full object-cover" 
                   />
@@ -72,61 +72,6 @@ const About = () => {
                     and greater peace of mind for parents. We're proud to be making a positive 
                     difference in school communities across the country.
                   </p>
-                </div>
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-semibold mb-6 text-center">Our Team</h2>
-                <p className="text-muted-foreground mb-12 text-center max-w-3xl mx-auto">
-                  SchoolRider is powered by a diverse team of educators, technologists, and 
-                  parents who are passionate about improving the school experience.
-                </p>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div className="text-center">
-                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-4">
-                      <img 
-                        src="https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?auto=format&fit=crop&w=400&q=80" 
-                        alt="Team member - CEO" 
-                        className="w-full h-full object-cover" 
-                      />
-                    </div>
-                    <h3 className="font-semibold text-lg">Dr. Maya Johnson</h3>
-                    <p className="text-primary">Co-Founder & CEO</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Former elementary school principal with 15 years in education administration
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-4">
-                      <img 
-                        src="https://images.unsplash.com/photo-1507152832244-10d45c7eda57?auto=format&fit=crop&w=400&q=80" 
-                        alt="Team member - CTO" 
-                        className="w-full h-full object-cover" 
-                      />
-                    </div>
-                    <h3 className="font-semibold text-lg">Marcus Williams</h3>
-                    <p className="text-primary">Co-Founder & CTO</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Software engineer with background in building secure, scalable education technologies
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-4">
-                      <img 
-                        src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=400&q=80" 
-                        alt="Team member - COO" 
-                        className="w-full h-full object-cover" 
-                      />
-                    </div>
-                    <h3 className="font-semibold text-lg">Amara Thompson</h3>
-                    <p className="text-primary">Chief Operating Officer</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Former district transportation coordinator and efficiency expert
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>

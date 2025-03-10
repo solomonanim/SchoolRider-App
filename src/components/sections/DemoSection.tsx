@@ -75,14 +75,14 @@ export const DemoSection = () => {
           <div className="lg:w-1/2 relative">
             <div className="rounded-xl overflow-hidden border shadow-xl">
               <img 
-                src="/placeholder.svg" 
+                src="https://images.unsplash.com/photo-1540479859555-17af45c78602?auto=format&fit=crop&w=800&h=500&q=80" 
                 alt="SchoolRider Demo" 
                 className="w-full h-auto"
               />
             </div>
             
             <div className="absolute -top-4 -right-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow-lg text-sm font-semibold">
-              WordPress Ready
+              Solution Ready
             </div>
             
             <div className="absolute -bottom-4 -left-4 bg-card border px-4 py-2 rounded-lg shadow-lg">

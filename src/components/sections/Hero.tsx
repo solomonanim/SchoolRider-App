@@ -40,7 +40,7 @@ export const Hero = () => {
           <div className="flex-1 relative">
             <div className="relative rounded-xl overflow-hidden shadow-xl border">
               <img 
-                src="/placeholder.svg" 
+                src="https://images.unsplash.com/photo-1581089781785-603411fa81e5?auto=format&fit=crop&w=800&h=500&q=80" 
                 alt="SchoolRider App Dashboard" 
                 className="w-full h-auto object-cover"
                 width={600}

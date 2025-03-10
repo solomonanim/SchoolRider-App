@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,7 @@ import { ThemeButton } from "../ui/ThemeButton";
 import { Link } from "react-router-dom";
 
 const navItems = [
-  { title: "Features", href: "#features" },
+  { title: "Features", href: "/features" },
   { title: "About", href: "/about" },
   { title: "Contact", href: "/contact" },
   { title: "Blog", href: "/blog" },
