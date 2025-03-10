@@ -1,7 +1,7 @@
 
-# SchoolRider WordPress Theme & Plugin
+# SchoolRider Solution
 
-A comprehensive WordPress solution for safe and efficient school dismissal processes.
+A comprehensive solution for safe and efficient school dismissal processes.
 
 **Author**: Solomon Anim (Solan)
 **Website**: [solangigs.com](https://solangigs.com)
