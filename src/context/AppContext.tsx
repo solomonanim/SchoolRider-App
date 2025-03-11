@@ -120,6 +120,18 @@ interface ParentRegistration {
   children: ChildRegistration[];
 }
 
+interface RiderRegistration {
+  name: string;
+  email: string;
+  password: string;
+  country: string;
+  phone?: string;
+  address?: string;
+  licenseNumber?: string;
+  vehicleInfo?: string;
+  parentId?: string;
+}
+
 interface AppContextType {
   isAuthenticated: boolean;
   currentUser: UserData | null;
@@ -134,6 +146,7 @@ interface AppContextType {
   registerSchool: (school: SchoolRegistration) => Promise<void>;
   registerTeacher: (teacher: TeacherRegistration) => Promise<void>;
   registerParent: (parent: ParentRegistration) => Promise<void>;
+  registerRider: (rider: RiderRegistration) => Promise<void>;
   schoolsList: School[];
 }
 
@@ -600,6 +613,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   };
 
+  // Register rider function
+  const registerRider = async (rider: RiderRegistration): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          // Create new user for rider
+          const newUser: UserData = {
+            id: Date.now(),
+            name: rider.name,
+            email: rider.email,
+            role: UserRole.RIDER,
+            country: rider.country,
+            phone: rider.phone || "",
+            address: rider.address || "",
+          };
+          
+          // Update state and localStorage
+          const updatedUsers = [...users, newUser];
+          setUsers(updatedUsers);
+          localStorage.setItem("schoolrider_users", JSON.stringify(updatedUsers));
+          
+          if (!rider.parentId) {
+            // Only log in the rider if they're registering directly (not via a parent)
+            setCurrentUser(newUser);
+            setIsAuthenticated(true);
+            localStorage.setItem("schoolrider_user", JSON.stringify(newUser));
+          }
+          
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }, 800); // Simulate network delay
+    });
+  };
+
   const value = {
     isAuthenticated,
     currentUser,
@@ -614,6 +663,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     registerSchool,
     registerTeacher,
     registerParent,
+    registerRider,
     schoolsList: schools
   };
 
