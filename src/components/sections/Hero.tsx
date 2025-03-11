@@ -39,162 +39,135 @@ export const Hero = () => {
             </div>
           </div>
           <div className="flex-1 relative h-[500px] md:h-[600px]">
-            {/* Multiple floating images with vertical flowing animations */}
-            <div className="absolute w-full h-full">
-              {/* Image 1 */}
-              <motion.div 
-                className="absolute top-[5%] right-[10%] w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border transform"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ 
-                  y: [0, -15, 0],
-                  opacity: 1 
-                }}
-                transition={{ 
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut"
-                  },
-                  opacity: { duration: 0.8 }
-                }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
-                  alt="Student being picked up" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
+            {/* Vertical slideshow container */}
+            <div className="absolute w-full h-full overflow-hidden">
+              {/* Left column of images */}
+              <div className="absolute left-[10%] w-40 h-full overflow-hidden">
+                <motion.div
+                  className="flex flex-col gap-4"
+                  animate={{ 
+                    y: [0, "-100%"] 
+                  }}
+                  transition={{
+                    y: {
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: 15,
+                      ease: "linear"
+                    }
+                  }}
+                >
+                  {/* First set of images */}
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
+                      alt="Student being picked up" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
+                      alt="School students" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
+                      alt="Teacher with students" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Duplicate set for seamless loop */}
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
+                      alt="Student being picked up" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
+                      alt="School students" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
+                      alt="Teacher with students" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+              </div>
               
-              {/* Image 2 */}
-              <motion.div 
-                className="absolute top-[30%] left-[5%] w-36 h-48 md:w-48 md:h-64 rounded-2xl overflow-hidden shadow-xl border transform"
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ 
-                  y: [0, -20, 0],
-                  opacity: 1 
-                }}
-                transition={{ 
-                  y: {
-                    duration: 4.5,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                    delay: 0.5
-                  },
-                  opacity: { duration: 0.7, delay: 0.2 }
-                }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
-                  alt="School students" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-              
-              {/* Image 3 */}
-              <motion.div 
-                className="absolute bottom-[5%] right-[20%] w-44 h-60 md:w-52 md:h-72 rounded-2xl overflow-hidden shadow-xl border transform"
-                initial={{ y: 60, opacity: 0 }}
-                animate={{ 
-                  y: [0, -25, 0],
-                  opacity: 1 
-                }}
-                transition={{ 
-                  y: {
-                    duration: 5,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                    delay: 1
-                  },
-                  opacity: { duration: 0.8, delay: 0.4 }
-                }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
-                  alt="Teacher with students" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-              
-              {/* Image 4 - New */}
-              <motion.div 
-                className="absolute top-[15%] left-[25%] w-32 h-44 md:w-44 md:h-60 rounded-2xl overflow-hidden shadow-xl border transform"
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ 
-                  y: [0, -15, 0],
-                  opacity: 1 
-                }}
-                transition={{ 
-                  y: {
-                    duration: 4.2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                    delay: 0.7
-                  },
-                  opacity: { duration: 0.7, delay: 0.3 }
-                }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
-                  alt="School classroom" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-              
-              {/* Image 5 - New */}
-              <motion.div 
-                className="absolute bottom-[28%] left-[35%] w-28 h-40 md:w-40 md:h-56 rounded-2xl overflow-hidden shadow-xl border transform"
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ 
-                  y: [0, -20, 0],
-                  opacity: 1 
-                }}
-                transition={{ 
-                  y: {
-                    duration: 4.8,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                    delay: 1.1
-                  },
-                  opacity: { duration: 0.7, delay: 0.5 }
-                }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
-                  alt="Students walking" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-              
-              {/* Image 6 - New */}
-              <motion.div 
-                className="absolute bottom-[10%] left-[10%] w-36 h-48 md:w-48 md:h-64 rounded-2xl overflow-hidden shadow-xl border transform"
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ 
-                  y: [0, -18, 0],
-                  opacity: 1 
-                }}
-                transition={{ 
-                  y: {
-                    duration: 5.2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                    delay: 0.9
-                  },
-                  opacity: { duration: 0.8, delay: 0.6 }
-                }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
-                  alt="Students with tablets" 
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
+              {/* Right column of images - with offset timing */}
+              <div className="absolute right-[15%] w-40 h-full overflow-hidden">
+                <motion.div
+                  className="flex flex-col gap-4"
+                  animate={{ 
+                    y: ["-30%", "-130%"] 
+                  }}
+                  transition={{
+                    y: {
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: 20,
+                      ease: "linear"
+                    }
+                  }}
+                >
+                  {/* First set of images */}
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
+                      alt="School classroom" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
+                      alt="Students walking" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
+                      alt="Students with tablets" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Duplicate set for seamless loop */}
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
+                      alt="School classroom" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
+                      alt="Students walking" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                    <img 
+                      src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
+                      alt="Students with tablets" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+              </div>
             </div>
             
             {/* Decorative elements */}
