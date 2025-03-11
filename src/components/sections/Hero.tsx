@@ -42,9 +42,9 @@ export const Hero = () => {
             {/* Vertical slideshow container */}
             <div className="absolute w-full h-full overflow-hidden">
               {/* Left column of images */}
-              <div className="absolute left-[10%] w-40 h-full overflow-hidden">
+              <div className="absolute left-[5%] md:left-[10%] w-[45%] max-w-[280px] h-full overflow-hidden">
                 <motion.div
-                  className="flex flex-col gap-4"
+                  className="flex flex-col gap-6 md:gap-8"
                   animate={{ 
                     y: [0, "-100%"] 
                   }}
@@ -52,27 +52,27 @@ export const Hero = () => {
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 15,
+                      duration: 25,
                       ease: "linear"
                     }
                   }}
                 >
                   {/* First set of images */}
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
                       alt="Student being picked up" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
                       alt="School students" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
                       alt="Teacher with students" 
@@ -81,21 +81,21 @@ export const Hero = () => {
                   </div>
                   
                   {/* Duplicate set for seamless loop */}
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
                       alt="Student being picked up" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
                       alt="School students" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
                       alt="Teacher with students" 
@@ -106,9 +106,9 @@ export const Hero = () => {
               </div>
               
               {/* Right column of images - with offset timing */}
-              <div className="absolute right-[15%] w-40 h-full overflow-hidden">
+              <div className="absolute right-[5%] md:right-[10%] w-[45%] max-w-[280px] h-full overflow-hidden">
                 <motion.div
-                  className="flex flex-col gap-4"
+                  className="flex flex-col gap-6 md:gap-8"
                   animate={{ 
                     y: ["-30%", "-130%"] 
                   }}
@@ -116,27 +116,27 @@ export const Hero = () => {
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 20,
+                      duration: 30,
                       ease: "linear"
                     }
                   }}
                 >
                   {/* First set of images */}
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
                       alt="School classroom" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
                       alt="Students walking" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
                       alt="Students with tablets" 
@@ -145,21 +145,21 @@ export const Hero = () => {
                   </div>
                   
                   {/* Duplicate set for seamless loop */}
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
                       alt="School classroom" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
                       alt="Students walking" 
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-40 h-56 md:w-56 md:h-72 rounded-2xl overflow-hidden shadow-xl border">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-xl border border-white/20">
                     <img 
                       src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
                       alt="Students with tablets" 
