@@ -16,13 +16,15 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { Car, School as SchoolIcon, User, GraduationCap, Plus, Trash2 } from "lucide-react";
+import { Car, School as SchoolIcon, User, GraduationCap, Plus, Trash2, UserCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { UserRole, useAppContext, Child } from "@/context/AppContext";
 import { CountrySelect } from "@/components/ui/country-select";
 import { SchoolSelect } from "@/components/ui/school-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
+import { Switch } from "@/components/ui/switch";
+import { motion } from "framer-motion";
 
 interface SchoolRiderSignupPageProps {
   onLogin: (role: UserRole) => void;
@@ -35,7 +37,7 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
 }) => {
   const [userType, setUserType] = useState<UserRole>(UserRole.PARENT);
   const { toast } = useToast();
-  const { registerSchool, registerTeacher, registerParent } = useAppContext();
+  const { registerSchool, registerTeacher, registerParent, registerRider } = useAppContext();
   
   // School form state
   const [schoolForm, setSchoolForm] = useState({
@@ -72,6 +74,20 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
     phone: "",
     address: "",
   });
+  
+  // Rider form state
+  const [riderForm, setRiderForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    country: "us",
+    phone: "",
+    address: "",
+    isParent: false,
+    licenseNumber: "",
+    vehicleInfo: "",
+  });
 
   // Children state for parent signup
   const [children, setChildren] = useState<Array<{
@@ -80,6 +96,14 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
     schoolId: string;
     id: number;
   }>>([{ name: "", grade: "", schoolId: "", id: Date.now() }]);
+  
+  // Riders state for parent signup
+  const [riders, setRiders] = useState<Array<{
+    name: string;
+    email: string;
+    password: string;
+    id: number;
+  }>>([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -98,6 +122,11 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
     const { name, value } = e.target;
     setParentForm(prev => ({ ...prev, [name]: value }));
   };
+  
+  const handleRiderFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setRiderForm(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleChildChange = (id: number, field: string, value: string) => {
     setChildren(prevChildren => 
@@ -106,9 +135,21 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
       )
     );
   };
+  
+  const handleRiderChange = (id: number, field: string, value: string) => {
+    setRiders(prevRiders => 
+      prevRiders.map(rider => 
+        rider.id === id ? { ...rider, [field]: value } : rider
+      )
+    );
+  };
 
   const addChild = () => {
     setChildren(prev => [...prev, { name: "", grade: "", schoolId: "", id: Date.now() }]);
+  };
+  
+  const addRider = () => {
+    setRiders(prev => [...prev, { name: "", email: "", password: "", id: Date.now() }]);
   };
 
   const removeChild = (id: number) => {
@@ -121,6 +162,10 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
         variant: "destructive",
       });
     }
+  };
+  
+  const removeRider = (id: number) => {
+    setRiders(prev => prev.filter(rider => rider.id !== id));
   };
 
   const handleSchoolSignup = async (e: React.FormEvent) => {
@@ -278,6 +323,7 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
     }
 
     try {
+      // First register parent
       await registerParent({
         name: parentForm.name,
         email: parentForm.email,
@@ -291,6 +337,24 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
           schoolId: parseInt(child.schoolId),
         })),
       });
+      
+      // Then register any riders created by the parent
+      if (riders.length > 0) {
+        for (const rider of riders) {
+          try {
+            await registerRider({
+              name: rider.name,
+              email: rider.email,
+              password: rider.password,
+              country: parentForm.country,
+              phone: "",
+              parentId: parentForm.email, // Link rider to parent
+            });
+          } catch (error) {
+            console.error("Failed to register rider:", rider.name);
+          }
+        }
+      }
       
       toast({
         title: "Registration Successful",
@@ -308,13 +372,84 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
       setIsLoading(false);
     }
   };
+  
+  const handleRiderSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // If rider is a parent, redirect to parent signup
+    if (riderForm.isParent) {
+      setUserType(UserRole.PARENT);
+      toast({
+        title: "Redirecting to Parent Signup",
+        description: "Since you're a parent, you'll need to complete the parent registration form.",
+      });
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    // Validation
+    if (riderForm.password !== riderForm.confirmPassword) {
+      toast({
+        title: "Passwords do not match",
+        description: "Please ensure both passwords are the same",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (!acceptTerms) {
+      toast({
+        title: "Terms and Privacy Policy",
+        description: "You must accept the Terms and Privacy Policy to continue",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      await registerRider({
+        name: riderForm.name,
+        email: riderForm.email,
+        password: riderForm.password,
+        country: riderForm.country,
+        phone: riderForm.phone,
+        address: riderForm.address,
+        licenseNumber: riderForm.licenseNumber,
+        vehicleInfo: riderForm.vehicleInfo,
+      });
+      
+      toast({
+        title: "Registration Successful",
+        description: "Your rider account has been created successfully",
+      });
+      
+      onLogin(UserRole.RIDER);
+    } catch (error) {
+      toast({
+        title: "Registration Failed",
+        description: "An error occurred during registration",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Animation variants for tabs content
+  const tabContentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-background p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/">
-            <div className="mx-auto w-16 h-16 mb-4 bg-primary rounded-2xl flex items-center justify-center cursor-pointer">
+            <div className="mx-auto w-16 h-16 mb-4 bg-primary rounded-2xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform">
               <Car className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold">SchoolRider</h1>
@@ -332,7 +467,7 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
           
           <CardContent>
             <Tabs defaultValue={UserRole.PARENT} onValueChange={(value) => setUserType(value as UserRole)}>
-              <TabsList className="grid grid-cols-3 mb-6">
+              <TabsList className="grid grid-cols-4 mb-6">
                 <TabsTrigger value={UserRole.PARENT} className="flex items-center gap-2">
                   <User className="h-4 w-4" />
                   <span className="hidden sm:inline">Parent</span>
@@ -345,486 +480,494 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
                   <GraduationCap className="h-4 w-4" />
                   <span className="hidden sm:inline">Teacher</span>
                 </TabsTrigger>
+                <TabsTrigger value={UserRole.RIDER} className="flex items-center gap-2">
+                  <Car className="h-4 w-4" />
+                  <span className="hidden sm:inline">Rider</span>
+                </TabsTrigger>
               </TabsList>
               
               {/* School Registration Form */}
               <TabsContent value={UserRole.SCHOOL}>
-                <form onSubmit={handleSchoolSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="school-name">School Name</Label>
-                    <Input 
-                      id="school-name" 
-                      name="name"
-                      value={schoolForm.name}
-                      onChange={handleSchoolFormChange}
-                      placeholder="Enter school name" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="school-email">Email</Label>
-                    <Input 
-                      id="school-email" 
-                      name="email"
-                      type="email" 
-                      value={schoolForm.email}
-                      onChange={handleSchoolFormChange}
-                      placeholder="school@example.com" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <motion.div 
+                  initial="hidden"
+                  animate="visible"
+                  variants={tabContentVariants}
+                >
+                  <form onSubmit={handleSchoolSignup} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="school-password">Password</Label>
+                      <Label htmlFor="school-name">School Name</Label>
                       <Input 
-                        id="school-password" 
-                        name="password"
-                        type="password" 
-                        value={schoolForm.password}
+                        id="school-name" 
+                        name="name"
+                        value={schoolForm.name}
                         onChange={handleSchoolFormChange}
+                        placeholder="Enter school name" 
                         required 
                       />
                     </div>
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="school-confirm-password">Confirm Password</Label>
+                      <Label htmlFor="school-email">Email</Label>
                       <Input 
-                        id="school-confirm-password" 
-                        name="confirmPassword"
-                        type="password" 
-                        value={schoolForm.confirmPassword}
+                        id="school-email" 
+                        name="email"
+                        type="email" 
+                        value={schoolForm.email}
                         onChange={handleSchoolFormChange}
+                        placeholder="school@example.com" 
                         required 
                       />
                     </div>
-                  </div>
-                  
-                  <CountrySelect
-                    label="Country"
-                    value={schoolForm.country}
-                    onValueChange={(value) => setSchoolForm(prev => ({ ...prev, country: value }))}
-                  />
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="school-address">Address</Label>
-                    <Input 
-                      id="school-address" 
-                      name="address"
-                      value={schoolForm.address}
-                      onChange={handleSchoolFormChange}
-                      placeholder="School address" 
-                      required 
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="school-password">Password</Label>
+                        <Input 
+                          id="school-password" 
+                          name="password"
+                          type="password" 
+                          value={schoolForm.password}
+                          onChange={handleSchoolFormChange}
+                          required 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="school-confirm-password">Confirm Password</Label>
+                        <Input 
+                          id="school-confirm-password" 
+                          name="confirmPassword"
+                          type="password" 
+                          value={schoolForm.confirmPassword}
+                          onChange={handleSchoolFormChange}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    
+                    <CountrySelect
+                      label="Country"
+                      value={schoolForm.country}
+                      onValueChange={(value) => setSchoolForm(prev => ({ ...prev, country: value }))}
                     />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="school-phone">Phone Number</Label>
+                      <Label htmlFor="school-address">Address</Label>
                       <Input 
-                        id="school-phone" 
-                        name="phone"
-                        value={schoolForm.phone}
+                        id="school-address" 
+                        name="address"
+                        value={schoolForm.address}
                         onChange={handleSchoolFormChange}
-                        placeholder="Phone number" 
+                        placeholder="School address" 
+                        required 
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="school-website">Website</Label>
-                      <Input 
-                        id="school-website" 
-                        name="website"
-                        value={schoolForm.website}
-                        onChange={handleSchoolFormChange}
-                        placeholder="https://school.edu" 
-                      />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="school-phone">Phone Number</Label>
+                        <Input 
+                          id="school-phone" 
+                          name="phone"
+                          value={schoolForm.phone}
+                          onChange={handleSchoolFormChange}
+                          placeholder="Phone number" 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="school-website">Website</Label>
+                        <Input 
+                          id="school-website" 
+                          name="website"
+                          value={schoolForm.website}
+                          onChange={handleSchoolFormChange}
+                          placeholder="https://school.edu" 
+                        />
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-2 pt-2">
-                    <input
-                      type="checkbox"
-                      id="school-terms"
-                      className="mt-0.5"
-                      checked={acceptTerms}
-                      onChange={(e) => setAcceptTerms(e.target.checked)}
-                      required
-                    />
-                    <label htmlFor="school-terms" className="text-xs text-muted-foreground">
-                      By creating an account, you agree to our{" "}
-                      <a href="/terms" className="text-primary hover:underline" target="_blank">Terms of Service</a> and{" "}
-                      <a href="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</a>
-                    </label>
-                  </div>
-                  
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        Creating Account...
-                      </span>
-                    ) : (
-                      "Create School Account"
-                    )}
-                  </Button>
-                </form>
+                    
+                    <div className="flex items-start space-x-2 pt-2">
+                      <input
+                        type="checkbox"
+                        id="school-terms"
+                        className="mt-0.5"
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                        required
+                      />
+                      <label htmlFor="school-terms" className="text-xs text-muted-foreground">
+                        By creating an account, you agree to our{" "}
+                        <Link to="/terms-conditions" className="text-primary hover:underline" target="_blank">Terms of Service</Link> and{" "}
+                        <Link to="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</Link>
+                      </label>
+                    </div>
+                    
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? (
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          Creating Account...
+                        </span>
+                      ) : (
+                        "Create School Account"
+                      )}
+                    </Button>
+                  </form>
+                </motion.div>
               </TabsContent>
               
               {/* Teacher Registration Form */}
               <TabsContent value={UserRole.TEACHER}>
-                <form onSubmit={handleTeacherSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="teacher-name">Full Name</Label>
-                    <Input 
-                      id="teacher-name" 
-                      name="name"
-                      value={teacherForm.name}
-                      onChange={handleTeacherFormChange}
-                      placeholder="Enter your full name" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="teacher-email">Email</Label>
-                    <Input 
-                      id="teacher-email" 
-                      name="email"
-                      type="email" 
-                      value={teacherForm.email}
-                      onChange={handleTeacherFormChange}
-                      placeholder="teacher@example.com" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <motion.div 
+                  initial="hidden"
+                  animate="visible"
+                  variants={tabContentVariants}
+                >
+                  <form onSubmit={handleTeacherSignup} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="teacher-password">Password</Label>
+                      <Label htmlFor="teacher-name">Full Name</Label>
                       <Input 
-                        id="teacher-password" 
-                        name="password"
-                        type="password" 
-                        value={teacherForm.password}
+                        id="teacher-name" 
+                        name="name"
+                        value={teacherForm.name}
                         onChange={handleTeacherFormChange}
+                        placeholder="Enter your full name" 
                         required 
                       />
                     </div>
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="teacher-confirm-password">Confirm Password</Label>
+                      <Label htmlFor="teacher-email">Email</Label>
                       <Input 
-                        id="teacher-confirm-password" 
-                        name="confirmPassword"
-                        type="password" 
-                        value={teacherForm.confirmPassword}
+                        id="teacher-email" 
+                        name="email"
+                        type="email" 
+                        value={teacherForm.email}
                         onChange={handleTeacherFormChange}
+                        placeholder="teacher@example.com" 
                         required 
                       />
                     </div>
-                  </div>
-                  
-                  <CountrySelect
-                    label="Country"
-                    value={teacherForm.country}
-                    onValueChange={(value) => setTeacherForm(prev => ({ ...prev, country: value }))}
-                  />
-                  
-                  <SchoolSelect
-                    label="School"
-                    value={teacherForm.schoolId}
-                    onValueChange={(value) => setTeacherForm(prev => ({ ...prev, schoolId: value }))}
-                    country={teacherForm.country}
-                  />
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="teacher-phone">Phone Number</Label>
-                    <Input 
-                      id="teacher-phone" 
-                      name="phone"
-                      value={teacherForm.phone}
-                      onChange={handleTeacherFormChange}
-                      placeholder="Phone number" 
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="teacher-password">Password</Label>
+                        <Input 
+                          id="teacher-password" 
+                          name="password"
+                          type="password" 
+                          value={teacherForm.password}
+                          onChange={handleTeacherFormChange}
+                          required 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="teacher-confirm-password">Confirm Password</Label>
+                        <Input 
+                          id="teacher-confirm-password" 
+                          name="confirmPassword"
+                          type="password" 
+                          value={teacherForm.confirmPassword}
+                          onChange={handleTeacherFormChange}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    
+                    <CountrySelect
+                      label="Country"
+                      value={teacherForm.country}
+                      onValueChange={(value) => setTeacherForm(prev => ({ ...prev, country: value }))}
                     />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <SchoolSelect
+                      label="School"
+                      value={teacherForm.schoolId}
+                      onValueChange={(value) => setTeacherForm(prev => ({ ...prev, schoolId: value }))}
+                      country={teacherForm.country}
+                    />
+                    
                     <div className="space-y-2">
-                      <Label htmlFor="teacher-subject">Subject/Area</Label>
+                      <Label htmlFor="teacher-phone">Phone Number</Label>
                       <Input 
-                        id="teacher-subject" 
-                        name="subject"
-                        value={teacherForm.subject}
+                        id="teacher-phone" 
+                        name="phone"
+                        value={teacherForm.phone}
                         onChange={handleTeacherFormChange}
-                        placeholder="e.g. Mathematics" 
+                        placeholder="Phone number" 
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="teacher-grade">Grade Level</Label>
-                      <Select 
-                        value={teacherForm.grade} 
-                        onValueChange={(value) => setTeacherForm(prev => ({ ...prev, grade: value }))}
-                      >
-                        <SelectTrigger id="teacher-grade">
-                          <SelectValue placeholder="Select Grade" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="K">Kindergarten</SelectItem>
-                          <SelectItem value="1">1st Grade</SelectItem>
-                          <SelectItem value="2">2nd Grade</SelectItem>
-                          <SelectItem value="3">3rd Grade</SelectItem>
-                          <SelectItem value="4">4th Grade</SelectItem>
-                          <SelectItem value="5">5th Grade</SelectItem>
-                          <SelectItem value="6">6th Grade</SelectItem>
-                          <SelectItem value="7">7th Grade</SelectItem>
-                          <SelectItem value="8">8th Grade</SelectItem>
-                          <SelectItem value="9">9th Grade</SelectItem>
-                          <SelectItem value="10">10th Grade</SelectItem>
-                          <SelectItem value="11">11th Grade</SelectItem>
-                          <SelectItem value="12">12th Grade</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="teacher-subject">Subject/Area</Label>
+                        <Input 
+                          id="teacher-subject" 
+                          name="subject"
+                          value={teacherForm.subject}
+                          onChange={handleTeacherFormChange}
+                          placeholder="e.g. Mathematics" 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="teacher-grade">Grade Level</Label>
+                        <Select 
+                          value={teacherForm.grade} 
+                          onValueChange={(value) => setTeacherForm(prev => ({ ...prev, grade: value }))}
+                        >
+                          <SelectTrigger id="teacher-grade">
+                            <SelectValue placeholder="Select Grade" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="K">Kindergarten</SelectItem>
+                            <SelectItem value="1">1st Grade</SelectItem>
+                            <SelectItem value="2">2nd Grade</SelectItem>
+                            <SelectItem value="3">3rd Grade</SelectItem>
+                            <SelectItem value="4">4th Grade</SelectItem>
+                            <SelectItem value="5">5th Grade</SelectItem>
+                            <SelectItem value="6">6th Grade</SelectItem>
+                            <SelectItem value="7">7th Grade</SelectItem>
+                            <SelectItem value="8">8th Grade</SelectItem>
+                            <SelectItem value="9">9th Grade</SelectItem>
+                            <SelectItem value="10">10th Grade</SelectItem>
+                            <SelectItem value="11">11th Grade</SelectItem>
+                            <SelectItem value="12">12th Grade</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-2 pt-2">
-                    <input
-                      type="checkbox"
-                      id="teacher-terms"
-                      className="mt-0.5"
-                      checked={acceptTerms}
-                      onChange={(e) => setAcceptTerms(e.target.checked)}
-                      required
-                    />
-                    <label htmlFor="teacher-terms" className="text-xs text-muted-foreground">
-                      By creating an account, you agree to our{" "}
-                      <a href="/terms" className="text-primary hover:underline" target="_blank">Terms of Service</a> and{" "}
-                      <a href="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</a>
-                    </label>
-                  </div>
-                  
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        Creating Account...
-                      </span>
-                    ) : (
-                      "Create Teacher Account"
-                    )}
-                  </Button>
-                </form>
+                    
+                    <div className="flex items-start space-x-2 pt-2">
+                      <input
+                        type="checkbox"
+                        id="teacher-terms"
+                        className="mt-0.5"
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                        required
+                      />
+                      <label htmlFor="teacher-terms" className="text-xs text-muted-foreground">
+                        By creating an account, you agree to our{" "}
+                        <Link to="/terms-conditions" className="text-primary hover:underline" target="_blank">Terms of Service</Link> and{" "}
+                        <Link to="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</Link>
+                      </label>
+                    </div>
+                    
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? (
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          Creating Account...
+                        </span>
+                      ) : (
+                        "Create Teacher Account"
+                      )}
+                    </Button>
+                  </form>
+                </motion.div>
               </TabsContent>
               
               {/* Parent Registration Form */}
               <TabsContent value={UserRole.PARENT}>
-                <form onSubmit={handleParentSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="parent-name">Full Name</Label>
-                    <Input 
-                      id="parent-name" 
-                      name="name"
-                      value={parentForm.name}
-                      onChange={handleParentFormChange}
-                      placeholder="Enter your full name" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="parent-email">Email</Label>
-                    <Input 
-                      id="parent-email" 
-                      name="email"
-                      type="email" 
-                      value={parentForm.email}
-                      onChange={handleParentFormChange}
-                      placeholder="parent@example.com" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <motion.div 
+                  initial="hidden"
+                  animate="visible"
+                  variants={tabContentVariants}
+                >
+                  <form onSubmit={handleParentSignup} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="parent-password">Password</Label>
-                      <Input 
-                        id="parent-password" 
-                        name="password"
-                        type="password" 
-                        value={parentForm.password}
-                        onChange={handleParentFormChange}
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="parent-confirm-password">Confirm Password</Label>
-                      <Input 
-                        id="parent-confirm-password" 
-                        name="confirmPassword"
-                        type="password" 
-                        value={parentForm.confirmPassword}
-                        onChange={handleParentFormChange}
-                        required 
-                      />
-                    </div>
-                  </div>
-                  
-                  <CountrySelect
-                    label="Country"
-                    value={parentForm.country}
-                    onValueChange={(value) => setParentForm(prev => ({ ...prev, country: value }))}
-                  />
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="parent-phone">Phone Number</Label>
-                      <Input 
-                        id="parent-phone" 
-                        name="phone"
-                        value={parentForm.phone}
-                        onChange={handleParentFormChange}
-                        placeholder="Phone number" 
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="parent-address">Address</Label>
-                      <Input 
-                        id="parent-address" 
-                        name="address"
-                        value={parentForm.address}
-                        onChange={handleParentFormChange}
-                        placeholder="Home address" 
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="border rounded-md p-4 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium">Children Information</h3>
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={addChild}
-                        className="flex items-center gap-1"
-                      >
-                        <Plus className="h-4 w-4" /> Add Child
-                      </Button>
+                      <Label htmlFor="parent-name">Full Name</Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                        <Input 
+                          id="parent-name" 
+                          name="name"
+                          value={parentForm.name}
+                          onChange={handleParentFormChange}
+                          placeholder="Enter your full name" 
+                          className="pl-10"
+                          required 
+                        />
+                      </div>
                     </div>
                     
-                    {children.map((child, index) => (
-                      <div key={child.id} className="space-y-4 pt-2 border-t first:border-t-0 first:pt-0">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-medium">Child {index + 1}</h4>
-                          <Button 
-                            type="button" 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => removeChild(child.id)}
-                            className="h-8 w-8 p-0"
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor={`child-name-${child.id}`}>Child's Name</Label>
-                          <Input 
-                            id={`child-name-${child.id}`}
-                            value={child.name}
-                            onChange={(e) => handleChildChange(child.id, "name", e.target.value)}
-                            placeholder="Child's full name" 
-                            required 
-                          />
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor={`child-grade-${child.id}`}>Grade</Label>
-                            <Select 
-                              value={child.grade} 
-                              onValueChange={(value) => handleChildChange(child.id, "grade", value)}
+                    <div className="space-y-2">
+                      <Label htmlFor="parent-email">Email</Label>
+                      <Input 
+                        id="parent-email" 
+                        name="email"
+                        type="email" 
+                        value={parentForm.email}
+                        onChange={handleParentFormChange}
+                        placeholder="parent@example.com" 
+                        required 
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-password">Password</Label>
+                        <Input 
+                          id="parent-password" 
+                          name="password"
+                          type="password" 
+                          value={parentForm.password}
+                          onChange={handleParentFormChange}
+                          required 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-confirm-password">Confirm Password</Label>
+                        <Input 
+                          id="parent-confirm-password" 
+                          name="confirmPassword"
+                          type="password" 
+                          value={parentForm.confirmPassword}
+                          onChange={handleParentFormChange}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    
+                    <CountrySelect
+                      label="Country"
+                      value={parentForm.country}
+                      onValueChange={(value) => setParentForm(prev => ({ ...prev, country: value }))}
+                    />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-phone">Phone Number</Label>
+                        <Input 
+                          id="parent-phone" 
+                          name="phone"
+                          value={parentForm.phone}
+                          onChange={handleParentFormChange}
+                          placeholder="Phone number" 
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="parent-address">Address</Label>
+                        <Input 
+                          id="parent-address" 
+                          name="address"
+                          value={parentForm.address}
+                          onChange={handleParentFormChange}
+                          placeholder="Home address" 
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Children information */}
+                    <div className="border rounded-md p-4 space-y-4 bg-card/50">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium flex items-center gap-2">
+                          <User className="h-4 w-4 text-primary" />
+                          Children Information
+                        </h3>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={addChild}
+                          className="flex items-center gap-1"
+                        >
+                          <Plus className="h-4 w-4" /> Add Child
+                        </Button>
+                      </div>
+                      
+                      {children.map((child, index) => (
+                        <div key={child.id} className="space-y-4 pt-2 border-t first:border-t-0 first:pt-0">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-sm font-medium">Child {index + 1}</h4>
+                            <Button 
+                              type="button" 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => removeChild(child.id)}
+                              className="h-8 w-8 p-0"
                             >
-                              <SelectTrigger id={`child-grade-${child.id}`}>
-                                <SelectValue placeholder="Select Grade" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="K">Kindergarten</SelectItem>
-                                <SelectItem value="1">1st Grade</SelectItem>
-                                <SelectItem value="2">2nd Grade</SelectItem>
-                                <SelectItem value="3">3rd Grade</SelectItem>
-                                <SelectItem value="4">4th Grade</SelectItem>
-                                <SelectItem value="5">5th Grade</SelectItem>
-                                <SelectItem value="6">6th Grade</SelectItem>
-                                <SelectItem value="7">7th Grade</SelectItem>
-                                <SelectItem value="8">8th Grade</SelectItem>
-                                <SelectItem value="9">9th Grade</SelectItem>
-                                <SelectItem value="10">10th Grade</SelectItem>
-                                <SelectItem value="11">11th Grade</SelectItem>
-                                <SelectItem value="12">12th Grade</SelectItem>
-                              </SelectContent>
-                            </Select>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
                           </div>
                           
-                          <SchoolSelect
-                            label="School"
-                            value={child.schoolId}
-                            onValueChange={(value) => handleChildChange(child.id, "schoolId", value)}
-                            country={parentForm.country}
-                          />
+                          <div className="space-y-2">
+                            <Label htmlFor={`child-name-${child.id}`}>Child's Name</Label>
+                            <Input 
+                              id={`child-name-${child.id}`}
+                              value={child.name}
+                              onChange={(e) => handleChildChange(child.id, "name", e.target.value)}
+                              placeholder="Child's full name" 
+                              required 
+                            />
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor={`child-grade-${child.id}`}>Grade</Label>
+                              <Select 
+                                value={child.grade} 
+                                onValueChange={(value) => handleChildChange(child.id, "grade", value)}
+                              >
+                                <SelectTrigger id={`child-grade-${child.id}`}>
+                                  <SelectValue placeholder="Select Grade" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="K">Kindergarten</SelectItem>
+                                  <SelectItem value="1">1st Grade</SelectItem>
+                                  <SelectItem value="2">2nd Grade</SelectItem>
+                                  <SelectItem value="3">3rd Grade</SelectItem>
+                                  <SelectItem value="4">4th Grade</SelectItem>
+                                  <SelectItem value="5">5th Grade</SelectItem>
+                                  <SelectItem value="6">6th Grade</SelectItem>
+                                  <SelectItem value="7">7th Grade</SelectItem>
+                                  <SelectItem value="8">8th Grade</SelectItem>
+                                  <SelectItem value="9">9th Grade</SelectItem>
+                                  <SelectItem value="10">10th Grade</SelectItem>
+                                  <SelectItem value="11">11th Grade</SelectItem>
+                                  <SelectItem value="12">12th Grade</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            <SchoolSelect
+                              label="School"
+                              value={child.schoolId}
+                              onValueChange={(value) => handleChildChange(child.id, "schoolId", value)}
+                              country={parentForm.country}
+                            />
+                          </div>
                         </div>
+                      ))}
+                    </div>
+                    
+                    {/* Rider Management Section */}
+                    <div className="border rounded-md p-4 space-y-4 bg-card/50">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium flex items-center gap-2">
+                          <Car className="h-4 w-4 text-primary" />
+                          Assign Riders (Optional)
+                        </h3>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={addRider}
+                          className="flex items-center gap-1"
+                        >
+                          <Plus className="h-4 w-4" /> Add Rider
+                        </Button>
                       </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-start space-x-2 pt-2">
-                    <input
-                      type="checkbox"
-                      id="parent-terms"
-                      className="mt-0.5"
-                      checked={acceptTerms}
-                      onChange={(e) => setAcceptTerms(e.target.checked)}
-                      required
-                    />
-                    <label htmlFor="parent-terms" className="text-xs text-muted-foreground">
-                      By creating an account, you agree to our{" "}
-                      <a href="/terms" className="text-primary hover:underline" target="_blank">Terms of Service</a> and{" "}
-                      <a href="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</a>
-                    </label>
-                  </div>
-                  
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        Creating Account...
-                      </span>
-                    ) : (
-                      "Create Parent Account"
-                    )}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-          
-          <CardFooter className="flex flex-col space-y-4">
-            <div className="text-center w-full">
-              <p className="text-sm text-muted-foreground">
-                Already have an account?{" "}
-                <button 
-                  type="button"
-                  onClick={onSwitchToLogin}
-                  className="text-primary hover:underline bg-transparent p-0 border-none cursor-pointer"
-                >
-                  Sign in
-                </button>
-              </p>
-            </div>
-          </CardFooter>
-        </Card>
-      </div>
-    </div>
-  );
-};
+                      
+                      {riders.length === 0 ? (
+                        <div className="text-center text-sm text-muted-foreground p-4">
+                          <Car className="h-10 w-10 mx-auto mb-2 text-muted-foreground/50" />
+                          <p>Add trusted individuals who can pick up your children.</p>
+                          <p>Each rider will receive login credentials to verify their identity.</p>
+                        </div>
+                      ) : (
+                        riders.map((rider, index) => (
+                          <div key={rider.id} className="space-y-4 pt-4 border-t first:border-t-0 first:pt-0">
+                            <div className="flex items-center justify-between">
+                              <h4 className="

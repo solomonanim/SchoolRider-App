@@ -4,8 +4,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 export enum UserRole {
   PARENT = "parent",
   SCHOOL = "school",
-  RIDER = "rider",
-  TEACHER = "teacher"
+  TEACHER = "teacher",
+  RIDER = "rider"
 }
 
 // Types
