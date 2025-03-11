@@ -1,5 +1,5 @@
 
-# SchoolRider App
+# SchoolRider Solution
 
 A comprehensive solution for safe and efficient school dismissal processes.
 
@@ -50,6 +50,51 @@ npm i
 npm run dev
 ```
 
+## Converting to WordPress
+
+To convert this React application to a WordPress theme and plugin:
+
+### Theme Conversion
+
+1. Create a WordPress theme directory structure with required files:
+   - `style.css` (with theme information)
+   - `functions.php`
+   - `index.php`
+   - Other template files (header.php, footer.php, etc.)
+
+2. Build the React application:
+   ```
+   npm run build
+   ```
+
+3. Integrate the built files with WordPress:
+   - Enqueue scripts and styles in `functions.php`
+   - Create template files that load the React application
+
+### Plugin Conversion
+
+1. Create a WordPress plugin directory structure:
+   - Main plugin PHP file with plugin information
+   - Include necessary admin pages and functionality
+   - Add necessary hooks and filters
+
+2. Convert React components to PHP/WordPress:
+   - User roles and capabilities
+   - Database interactions
+   - Admin UI
+
+3. Ensure compatibility with Elementor:
+   - Create custom Elementor widgets
+   - Add necessary hooks for Elementor integration
+
+## Elementor Compatibility
+
+SchoolRider theme is designed to work seamlessly with Elementor:
+
+- Custom widgets for dismissal management
+- Styled elements matching the SchoolRider aesthetic
+- Compatible templates and sections
+
 ## Technical Requirements
 
 This project is built with:
@@ -59,6 +104,13 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+
+## WordPress Requirements
+
+- WordPress 5.9+
+- PHP 7.4+
+- MySQL 5.7+ or MariaDB 10.3+
+- Elementor 3.5+
 
 ## License
 
