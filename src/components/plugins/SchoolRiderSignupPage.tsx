@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -970,4 +971,270 @@ export const SchoolRiderSignupPage: React.FC<SchoolRiderSignupPageProps> = ({
                         riders.map((rider, index) => (
                           <div key={rider.id} className="space-y-4 pt-4 border-t first:border-t-0 first:pt-0">
                             <div className="flex items-center justify-between">
-                              <h4 className="
+                              <h4 className="text-sm font-medium flex items-center gap-2">
+                                <UserCheck className="h-4 w-4 text-muted-foreground" />
+                                Rider {index + 1}
+                              </h4>
+                              <Button 
+                                type="button" 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => removeRider(rider.id)}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              </Button>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor={`rider-name-${rider.id}`}>Rider's Name</Label>
+                              <Input 
+                                id={`rider-name-${rider.id}`}
+                                value={rider.name}
+                                onChange={(e) => handleRiderChange(rider.id, "name", e.target.value)}
+                                placeholder="Rider's full name" 
+                                required 
+                              />
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor={`rider-email-${rider.id}`}>Rider's Email</Label>
+                              <Input 
+                                id={`rider-email-${rider.id}`}
+                                type="email"
+                                value={rider.email}
+                                onChange={(e) => handleRiderChange(rider.id, "email", e.target.value)}
+                                placeholder="rider@example.com" 
+                                required 
+                              />
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor={`rider-password-${rider.id}`}>Create Password for Rider</Label>
+                              <Input 
+                                id={`rider-password-${rider.id}`}
+                                type="password"
+                                value={rider.password}
+                                onChange={(e) => handleRiderChange(rider.id, "password", e.target.value)}
+                                placeholder="Secure password" 
+                                required 
+                              />
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    
+                    <div className="flex items-start space-x-2 pt-2">
+                      <input
+                        type="checkbox"
+                        id="parent-terms"
+                        className="mt-0.5"
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                        required
+                      />
+                      <label htmlFor="parent-terms" className="text-xs text-muted-foreground">
+                        By creating an account, you agree to our{" "}
+                        <Link to="/terms-conditions" className="text-primary hover:underline" target="_blank">Terms of Service</Link> and{" "}
+                        <Link to="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</Link>
+                      </label>
+                    </div>
+                    
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? (
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          Creating Account...
+                        </span>
+                      ) : (
+                        "Create Parent Account"
+                      )}
+                    </Button>
+                  </form>
+                </motion.div>
+              </TabsContent>
+              
+              {/* Rider Registration Form */}
+              <TabsContent value={UserRole.RIDER}>
+                <motion.div 
+                  initial="hidden"
+                  animate="visible"
+                  variants={tabContentVariants}
+                >
+                  <form onSubmit={handleRiderSignup} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="rider-name">Full Name</Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                        <Input 
+                          id="rider-name" 
+                          name="name"
+                          value={riderForm.name}
+                          onChange={handleRiderFormChange}
+                          placeholder="Enter your full name" 
+                          className="pl-10"
+                          required 
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="rider-email">Email</Label>
+                      <Input 
+                        id="rider-email" 
+                        name="email"
+                        type="email" 
+                        value={riderForm.email}
+                        onChange={handleRiderFormChange}
+                        placeholder="rider@example.com" 
+                        required 
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="rider-password">Password</Label>
+                        <Input 
+                          id="rider-password" 
+                          name="password"
+                          type="password" 
+                          value={riderForm.password}
+                          onChange={handleRiderFormChange}
+                          required 
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="rider-confirm-password">Confirm Password</Label>
+                        <Input 
+                          id="rider-confirm-password" 
+                          name="confirmPassword"
+                          type="password" 
+                          value={riderForm.confirmPassword}
+                          onChange={handleRiderFormChange}
+                          required 
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2 py-2">
+                      <Label htmlFor="rider-is-parent" className="flex-1 font-medium">
+                        Are you a parent?
+                      </Label>
+                      <Switch
+                        id="rider-is-parent"
+                        checked={riderForm.isParent}
+                        onCheckedChange={(checked) => 
+                          setRiderForm(prev => ({ ...prev, isParent: checked }))
+                        }
+                      />
+                    </div>
+                    
+                    {!riderForm.isParent && (
+                      <>
+                        <CountrySelect
+                          label="Country"
+                          value={riderForm.country}
+                          onValueChange={(value) => setRiderForm(prev => ({ ...prev, country: value }))}
+                        />
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="rider-phone">Phone Number</Label>
+                            <Input 
+                              id="rider-phone" 
+                              name="phone"
+                              value={riderForm.phone}
+                              onChange={handleRiderFormChange}
+                              placeholder="Phone number" 
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="rider-address">Address</Label>
+                            <Input 
+                              id="rider-address" 
+                              name="address"
+                              value={riderForm.address}
+                              onChange={handleRiderFormChange}
+                              placeholder="Home address" 
+                              required
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="rider-license">License Number</Label>
+                            <Input 
+                              id="rider-license" 
+                              name="licenseNumber"
+                              value={riderForm.licenseNumber}
+                              onChange={handleRiderFormChange}
+                              placeholder="Driver's license" 
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="rider-vehicle">Vehicle Information</Label>
+                            <Input 
+                              id="rider-vehicle" 
+                              name="vehicleInfo"
+                              value={riderForm.vehicleInfo}
+                              onChange={handleRiderFormChange}
+                              placeholder="Make, model, color" 
+                              required
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start space-x-2 pt-2">
+                          <input
+                            type="checkbox"
+                            id="rider-terms"
+                            className="mt-0.5"
+                            checked={acceptTerms}
+                            onChange={(e) => setAcceptTerms(e.target.checked)}
+                            required
+                          />
+                          <label htmlFor="rider-terms" className="text-xs text-muted-foreground">
+                            By creating an account, you agree to our{" "}
+                            <Link to="/terms-conditions" className="text-primary hover:underline" target="_blank">Terms of Service</Link> and{" "}
+                            <Link to="/privacy" className="text-primary hover:underline" target="_blank">Privacy Policy</Link>
+                          </label>
+                        </div>
+                      </>
+                    )}
+                    
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                      {isLoading ? (
+                        <span className="flex items-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          {riderForm.isParent ? "Redirecting..." : "Creating Account..."}
+                        </span>
+                      ) : (
+                        riderForm.isParent ? "Continue as Parent" : "Create Rider Account"
+                      )}
+                    </Button>
+                  </form>
+                </motion.div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+          
+          <CardFooter className="flex flex-col space-y-4">
+            <div className="text-center w-full">
+              <Button 
+                variant="link" 
+                className="text-muted-foreground text-sm" 
+                onClick={onSwitchToLogin}
+              >
+                Already have an account? Log in
+              </Button>
+            </div>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
+  );
+};
