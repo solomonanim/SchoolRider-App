@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { title: "Features", href: "/features" },
   { title: "About", href: "/about" },
   { title: "Contact", href: "/contact" },
   { title: "Blog", href: "/blog" },

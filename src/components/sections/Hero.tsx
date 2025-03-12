@@ -42,9 +42,9 @@ export const Hero = () => {
             {/* Vertical slideshow container */}
             <div className="absolute w-full h-full overflow-hidden">
               {/* Full width column of images */}
-              <div className="absolute w-full h-full flex justify-center">
+              <div className="flex justify-center w-full h-full">
                 <motion.div
-                  className="w-[80%] max-w-[400px] flex flex-col gap-16"
+                  className="w-full max-w-[400px] flex flex-col gap-8"
                   animate={{ 
                     y: ["0%", "-50%"] 
                   }}
@@ -52,7 +52,7 @@ export const Hero = () => {
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 30,
+                      duration: 20,
                       ease: "linear"
                     }
                   }}
