@@ -41,131 +41,57 @@ export const Hero = () => {
           <div className="flex-1 relative h-[600px] md:h-[700px]">
             {/* Vertical slideshow container */}
             <div className="absolute w-full h-full overflow-hidden">
-              {/* Left column of images */}
-              <div className="absolute left-[15%] md:left-[20%] w-[30%] max-w-[250px]">
+              {/* Single column of images */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-[40%] max-w-[300px]">
                 <motion.div
                   className="flex flex-col gap-16 md:gap-20"
                   animate={{ 
-                    y: [0, "-200%"] 
+                    y: [0, "-600%"] 
                   }}
                   transition={{
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 30,
+                      duration: 40,
                       ease: "linear"
                     }
                   }}
                 >
                   {/* First set of images */}
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
-                      alt="Student being picked up" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
-                      alt="School students" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
-                      alt="Teacher with students" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
+                  {[ 
+                    "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
+                  ].map((src, index) => (
+                    <div key={index} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                      <img 
+                        src={src} 
+                        alt={`Image ${index + 1}`} 
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+                  ))}
+
                   {/* Duplicate set for seamless loop */}
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80" 
-                      alt="Student being picked up" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80" 
-                      alt="School students" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80" 
-                      alt="Teacher with students" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </motion.div>
-              </div>
-              
-              {/* Right column of images - with offset timing */}
-              <div className="absolute right-[15%] md:right-[20%] w-[30%] max-w-[250px]">
-                <motion.div
-                  className="flex flex-col gap-16 md:gap-20"
-                  animate={{ 
-                    y: ["-50%", "-250%"] 
-                  }}
-                  transition={{
-                    y: {
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      duration: 35,
-                      ease: "linear"
-                    }
-                  }}
-                >
-                  {/* First set of images */}
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
-                      alt="School classroom" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
-                      alt="Students walking" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
-                      alt="Students with tablets" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  {/* Duplicate set for seamless loop */}
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80" 
-                      alt="School classroom" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80" 
-                      alt="Students walking" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
-                    <img 
-                      src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" 
-                      alt="Students with tablets" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  {[ 
+                    "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
+                  ].map((src, index) => (
+                    <div key={`loop-${index}`} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                      <img 
+                        src={src} 
+                        alt={`Image ${index + 1}`} 
+                        className="w-full h-full object-cover" 
+                      />
+                    </div>
+                  ))}
                 </motion.div>
               </div>
             </div>
@@ -184,7 +110,7 @@ export const Hero = () => {
                 duration: 4,
                 ease: "easeInOut" 
               }}
-            ></motion.div>
+            />
             <motion.div 
               className="absolute -z-10 bottom-1/3 right-1/4 w-32 h-32 bg-primary/15 rounded-full blur-xl"
               animate={{ 
@@ -195,12 +121,13 @@ export const Hero = () => {
                 repeat: Infinity,
                 duration: 5,
                 ease: "easeInOut",
-                delay: 1
+                delay: 1 
               }}
-            ></motion.div>
+            />
           </div>
         </div>
       </div>
     </section>
   );
 };
+
