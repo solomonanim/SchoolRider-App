@@ -7,8 +7,8 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="w-full bg-accent py-16 border-t">
-      <div className="container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <footer className="w-full bg-accent py-16 border-t pb-24 md:pb-16">
+      <div className="container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-[1300px] mx-auto">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <div className="relative w-8 h-8 rounded-md bg-foreground">
@@ -87,7 +87,7 @@ export const Footer = () => {
         </div>
       </div>
       
-      <div className="container mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="container mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4 max-w-[1300px] mx-auto">
         <p className="text-sm text-muted-foreground">
           © {currentYear} SchoolRider by <a href="https://solangigs.com" className="hover:text-primary transition-colors">Solangigs</a>. All rights reserved.
         </p>

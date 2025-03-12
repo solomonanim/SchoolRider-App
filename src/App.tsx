@@ -17,6 +17,7 @@ import Tutorials from "./pages/Tutorials";
 import Changelog from "./pages/Changelog";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import { MobileFooter } from "./components/layout/MobileFooter";
 
 const queryClient = new QueryClient();
 
@@ -27,21 +28,24 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/plugin" element={<SchoolRiderPlugin />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/docs" element={<Documentation />} />
-            <Route path="/terms-conditions" element={<TermsConditions />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/tutorials" element={<Tutorials />} />
-            <Route path="/changelog" element={<Changelog />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="min-h-screen">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/plugin" element={<SchoolRiderPlugin />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/docs" element={<Documentation />} />
+              <Route path="/terms-conditions" element={<TermsConditions />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/tutorials" element={<Tutorials />} />
+              <Route path="/changelog" element={<Changelog />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <MobileFooter />
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </AppProvider>

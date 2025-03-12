@@ -44,7 +44,7 @@ export const Hero = () => {
               {/* Full width column of images */}
               <div className="flex justify-center w-full h-full">
                 <motion.div
-                  className="w-full max-w-[400px] flex flex-col gap-8"
+                  className="w-full max-w-[400px] flex flex-col gap-6"
                   animate={{ 
                     y: ["0%", "-50%"] 
                   }}
@@ -52,7 +52,7 @@ export const Hero = () => {
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 20,
+                      duration: 12,
                       ease: "linear"
                     }
                   }}
@@ -66,7 +66,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`first-${index}`} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`first-${index}`} className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
@@ -84,7 +84,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`second-${index}`} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`second-${index}`} className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
