@@ -37,11 +37,11 @@ export const Hero = () => {
               </Link>
             </div>
           </div>
-          <div className="flex-1 relative h-[600px]">
+          <div className="flex-1 relative h-[800px]">
             <div className="absolute w-full h-full overflow-hidden">
               <div className="flex justify-center w-full h-full">
                 <motion.div
-                  className="w-full max-w-[400px] flex flex-col gap-4"
+                  className="w-full max-w-[400px] flex flex-col gap-8"
                   animate={{ 
                     y: ["0%", "-50%"] 
                   }}
@@ -49,7 +49,7 @@ export const Hero = () => {
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 12,
+                      duration: 8,
                       ease: "linear"
                     }
                   }}
@@ -62,7 +62,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`first-${index}`} className="w-full h-[500px] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`first-${index}`} className="w-full h-[700px] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
@@ -79,7 +79,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`second-${index}`} className="w-full h-[500px] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`second-${index}`} className="w-full h-[700px] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
