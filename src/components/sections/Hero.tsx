@@ -41,18 +41,18 @@ export const Hero = () => {
           <div className="flex-1 relative h-[600px] md:h-[700px]">
             {/* Vertical slideshow container */}
             <div className="absolute w-full h-full overflow-hidden">
-              {/* Single column of images */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-[40%] max-w-[300px]">
+              {/* Full width column of images */}
+              <div className="absolute w-full h-full flex justify-center">
                 <motion.div
-                  className="flex flex-col gap-16 md:gap-20"
+                  className="w-[80%] max-w-[400px] flex flex-col gap-16"
                   animate={{ 
-                    y: [0, "-600%"] 
+                    y: ["0%", "-50%"] 
                   }}
                   transition={{
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 40,
+                      duration: 30,
                       ease: "linear"
                     }
                   }}
@@ -66,7 +66,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={index} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`first-${index}`} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
@@ -84,7 +84,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`loop-${index}`} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`second-${index}`} className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
@@ -130,4 +130,3 @@ export const Hero = () => {
     </section>
   );
 };
-
