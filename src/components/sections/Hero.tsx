@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LogIn } from "lucide-react";
@@ -38,13 +37,11 @@ export const Hero = () => {
               </Link>
             </div>
           </div>
-          <div className="flex-1 relative h-[600px] md:h-[700px]">
-            {/* Vertical slideshow container */}
+          <div className="flex-1 relative h-[600px]">
             <div className="absolute w-full h-full overflow-hidden">
-              {/* Full width column of images */}
               <div className="flex justify-center w-full h-full">
                 <motion.div
-                  className="w-full max-w-[400px] flex flex-col gap-6"
+                  className="w-full max-w-[400px] flex flex-col gap-4"
                   animate={{ 
                     y: ["0%", "-50%"] 
                   }}
@@ -57,7 +54,6 @@ export const Hero = () => {
                     }
                   }}
                 >
-                  {/* First set of images */}
                   {[ 
                     "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80",
@@ -66,7 +62,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`first-${index}`} className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`first-${index}`} className="w-full h-[500px] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
@@ -75,7 +71,6 @@ export const Hero = () => {
                     </div>
                   ))}
 
-                  {/* Duplicate set for seamless loop */}
                   {[ 
                     "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80",
@@ -84,7 +79,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`second-${index}`} className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`second-${index}`} className="w-full h-[500px] rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
@@ -96,7 +91,6 @@ export const Hero = () => {
               </div>
             </div>
             
-            {/* Decorative elements */}
             <div className="absolute -z-10 -top-20 -right-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
             <div className="absolute -z-10 -bottom-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
             <motion.div 
