@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
 
 export const Hero = () => {
   return (
@@ -41,34 +39,35 @@ export const Hero = () => {
             </div>
           </div>
           
-          {/* Modern vertical slideshow */}
+          {/* Modern vertical slideshow with exactly 5 images */}
           <div className="flex-1 relative h-[800px] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
             <div className="absolute inset-0 w-full h-full">
               <div className="vertical-slideshow h-full w-full">
+                {/* Gradient overlays for smooth transitions */}
                 <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none"></div>
                 
                 <motion.div
                   className="flex flex-col w-full"
                   animate={{ 
-                    y: [0, -100 * 6]  // Number of images * -100%
+                    y: [0, -100 * 5]  // 5 images * -100%
                   }}
                   transition={{
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 20,
+                      duration: 25,  // Slower animation for better visibility
                       ease: "linear"
                     }
                   }}
                 >
+                  {/* Exactly 5 portrait images */}
                   {[
-                    "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80"
+                    "https://images.unsplash.com/photo-1633113093730-47449a1a9c6e?auto=format&fit=crop&q=80&w=1000",
+                    "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=1000",
+                    "https://images.unsplash.com/photo-1581447109200-bf2769546fd8?auto=format&fit=crop&q=80&w=1000",
+                    "https://images.unsplash.com/photo-1583508805133-8fd03a9916d0?auto=format&fit=crop&q=80&w=1000",
+                    "https://images.unsplash.com/photo-1546155701-39de63c0429c?auto=format&fit=crop&q=80&w=1000"
                   ].map((src, index) => (
                     <div key={`slide-${index}`} className="w-full h-[800px] flex-shrink-0">
                       <img 
@@ -81,9 +80,8 @@ export const Hero = () => {
                   
                   {/* Duplicate the first few images to create a seamless loop */}
                   {[
-                    "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80"
+                    "https://images.unsplash.com/photo-1633113093730-47449a1a9c6e?auto=format&fit=crop&q=80&w=1000",
+                    "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=1000"
                   ].map((src, index) => (
                     <div key={`slide-repeat-${index}`} className="w-full h-[800px] flex-shrink-0">
                       <img 
