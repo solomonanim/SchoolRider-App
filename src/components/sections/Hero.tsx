@@ -39,14 +39,10 @@ export const Hero = () => {
             </div>
           </div>
           
-          {/* Modern vertical slideshow with exactly 5 images */}
+          {/* Modern vertical slideshow with exactly 5 images - faster animation and no overlay */}
           <div className="flex-1 relative h-[800px] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
             <div className="absolute inset-0 w-full h-full">
               <div className="vertical-slideshow h-full w-full">
-                {/* Gradient overlays for smooth transitions */}
-                <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none"></div>
-                
                 <motion.div
                   className="flex flex-col w-full"
                   animate={{ 
@@ -56,7 +52,7 @@ export const Hero = () => {
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 25,  // Slower animation for better visibility
+                      duration: 15,  // Faster animation
                       ease: "linear"
                     }
                   }}
