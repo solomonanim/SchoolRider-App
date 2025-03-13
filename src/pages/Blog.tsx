@@ -4,16 +4,22 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, User, ArrowRight } from "lucide-react";
+import { CalendarDays, User, ArrowRight, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { BlogPost, BlogPostProps } from "@/components/blog/BlogPost";
+import { useAppContext } from "@/context/AppContext";
 
-const blogPosts = [
+const blogPosts: BlogPostProps[] = [
   {
     id: 1,
     title: "How SchoolRider is Transforming School Dismissal Safety",
     description: "Learn how schools across the country are implementing SchoolRider to make dismissal safer and more efficient.",
-    image: "https://images.unsplash.com/photo-1581078426770-6d336e5de7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-    author: "Amara Johnson",
+    content: "Learn how schools across the country are implementing SchoolRider to make dismissal safer and more efficient.",
+    thumbnailUrl: "https://images.unsplash.com/photo-1581078426770-6d336e5de7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+    author: {
+      name: "Amara Johnson",
+      avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
     date: "May 15, 2023",
     category: "Safety"
   },
@@ -21,8 +27,12 @@ const blogPosts = [
     id: 2,
     title: "The Benefits of Digitizing School Pickup Systems",
     description: "Research shows that digital dismissal systems can reduce pickup times by up to 40% while improving safety protocols.",
-    image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-    author: "Marcus Davis",
+    content: "Research shows that digital dismissal systems can reduce pickup times by up to 40% while improving safety protocols.",
+    thumbnailUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+    author: {
+      name: "Marcus Davis",
+      avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
     date: "April 22, 2023",
     category: "Technology"
   },
@@ -30,8 +40,12 @@ const blogPosts = [
     id: 3,
     title: "Parent Testimonials: How SchoolRider Changed Our Routine",
     description: "Real stories from parents who have experienced the difference SchoolRider makes in their daily school pickup routine.",
-    image: "https://images.unsplash.com/photo-1594608661623-aa0bd3a69799?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-    author: "Sophia Williams",
+    content: "Real stories from parents who have experienced the difference SchoolRider makes in their daily school pickup routine.",
+    thumbnailUrl: "https://images.unsplash.com/photo-1594608661623-aa0bd3a69799?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+    author: {
+      name: "Sophia Williams",
+      avatarUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
     date: "March 10, 2023",
     category: "Testimonials"
   },
@@ -39,8 +53,12 @@ const blogPosts = [
     id: 4,
     title: "SchoolRider's New Features for the Upcoming School Year",
     description: "Explore the new features and improvements coming to SchoolRider for the next academic year.",
-    image: "https://images.unsplash.com/photo-1581078426770-6d336e5de7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-    author: "David Thompson",
+    content: "Explore the new features and improvements coming to SchoolRider for the next academic year.",
+    thumbnailUrl: "https://images.unsplash.com/photo-1581078426770-6d336e5de7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+    author: {
+      name: "David Thompson",
+      avatarUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
     date: "February 28, 2023",
     category: "Updates"
   },
@@ -48,24 +66,41 @@ const blogPosts = [
     id: 5,
     title: "How to Implement SchoolRider at Your School: A Principal's Guide",
     description: "A step-by-step guide for school administrators looking to transform their dismissal process with SchoolRider.",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
-    author: "Principal James Wilson",
+    content: "A step-by-step guide for school administrators looking to transform their dismissal process with SchoolRider.",
+    thumbnailUrl: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
+    author: {
+      name: "Principal James Wilson",
+      avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    },
     date: "January 15, 2023",
     category: "Implementation"
   }
 ];
 
 const Blog = () => {
+  const { isAuthenticated } = useAppContext();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow pt-28">
         <section className="container px-4 py-12">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">SchoolRider Blog</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              News, insights, and stories about school dismissal management and education safety
-            </p>
+          <div className="flex justify-between items-center mb-16">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">SchoolRider Blog</h1>
+              <p className="text-xl text-muted-foreground max-w-2xl">
+                News, insights, and stories about school dismissal management and education safety
+              </p>
+            </div>
+            
+            {isAuthenticated && (
+              <Link to="/create-post">
+                <Button className="gap-2">
+                  <PlusCircle className="h-4 w-4" />
+                  Create Post
+                </Button>
+              </Link>
+            )}
           </div>
           
           {/* Featured Article */}
@@ -113,35 +148,7 @@ const Blog = () => {
           {/* Blog Articles Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post) => (
-              <Card key={post.id} className="overflow-hidden border shadow-sm hover:shadow-md transition-shadow">
-                <div className="aspect-video relative">
-                  <img 
-                    src={post.image} 
-                    alt={post.title} 
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                </div>
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium bg-primary/10 text-primary px-3 py-1 rounded-full">
-                      {post.category}
-                    </span>
-                  </div>
-                  <CardTitle className="text-xl">{post.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="pb-4">
-                  <CardDescription>{post.description}</CardDescription>
-                </CardContent>
-                <CardFooter className="pt-0 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <CalendarDays className="h-3 w-3" />
-                    <span>{post.date}</span>
-                  </div>
-                  <Button variant="link" className="p-0 h-auto text-sm" asChild>
-                    <Link to="#">Read More</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
+              <BlogPost key={post.id} {...post} />
             ))}
           </div>
           

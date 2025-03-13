@@ -18,6 +18,7 @@ import Changelog from "./pages/Changelog";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import { MobileFooter } from "./components/layout/MobileFooter";
+import CreatePost from "./pages/CreatePost";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/plugin" element={<SchoolRiderPlugin />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/create-post" element={<CreatePost />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/docs" element={<Documentation />} />
               <Route path="/terms-conditions" element={<TermsConditions />} />

@@ -53,25 +53,25 @@ export const SchoolRiderInfo = () => {
         
         <div className="mt-16 p-6 bg-primary/5 rounded-xl border">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="mb-6 md:mb-0">
-              <h3 className="text-2xl font-bold mb-2 flex items-center">
-                <School className="mr-2 h-6 w-6" />
-                Perfect for All School Types
+            <div className="mb-6 md:mb-0 text-center md:text-left">
+              <h3 className="text-2xl font-bold mb-2 flex flex-col md:flex-row items-center justify-center md:justify-start">
+                <School className="mr-0 md:mr-2 mb-2 md:mb-0 h-6 w-6" />
+                <span>Perfect for All School Types</span>
               </h3>
               <p className="text-muted-foreground">
                 Elementary, middle, high schools, and private academies across the country trust SchoolRider.
               </p>
             </div>
-            <div className="flex gap-4">
-              <div className="text-center">
+            <div className="flex flex-wrap gap-4 justify-center">
+              <div className="text-center px-4">
                 <div className="text-3xl font-bold">500+</div>
                 <div className="text-sm text-muted-foreground">Schools</div>
               </div>
-              <div className="text-center">
+              <div className="text-center px-4">
                 <div className="text-3xl font-bold">250,000+</div>
                 <div className="text-sm text-muted-foreground">Students</div>
               </div>
-              <div className="text-center">
+              <div className="text-center px-4">
                 <div className="text-3xl font-bold">98%</div>
                 <div className="text-sm text-muted-foreground">Satisfaction</div>
               </div>

@@ -80,17 +80,6 @@ export const DemoSection = () => {
                 className="w-full h-auto"
               />
             </div>
-            
-            <div className="absolute -top-4 -right-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow-lg text-sm font-semibold">
-              Solution Ready
-            </div>
-            
-            <div className="absolute -bottom-4 -left-4 bg-card border px-4 py-2 rounded-lg shadow-lg">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className="text-sm font-medium">Live Demo Available</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

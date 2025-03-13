@@ -11,7 +11,7 @@ export const Hero = () => {
       <div className="container px-4 sm:px-6 max-w-[1300px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 mt-12 sm:mt-16 md:mt-8">
               <span className="text-gradient">SchoolRider</span>
               <br />
               <span className="text-3xl md:text-4xl lg:text-5xl">Safe & Efficient School Dismissal</span>
@@ -22,7 +22,7 @@ export const Hero = () => {
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
               <Link to="/plugin">
                 <Button size="lg" className="gap-2">
-                  Login
+                  Sign Up
                   <LogIn className="h-5 w-5" />
                 </Button>
               </Link>
@@ -40,7 +40,7 @@ export const Hero = () => {
           </div>
           
           {/* Modern vertical slideshow with exactly 5 images - faster animation and no overlay */}
-          <div className="flex-1 relative h-[800px] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
+          <div className="flex-1 relative h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden rounded-2xl shadow-2xl border border-white/10 mt-12 lg:mt-0">
             <div className="absolute inset-0 w-full h-full">
               <div className="vertical-slideshow h-full w-full">
                 <motion.div
@@ -65,7 +65,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1583508805133-8fd03a9916d0?auto=format&fit=crop&q=80&w=1000",
                     "https://images.unsplash.com/photo-1546155701-39de63c0429c?auto=format&fit=crop&q=80&w=1000"
                   ].map((src, index) => (
-                    <div key={`slide-${index}`} className="w-full h-[800px] flex-shrink-0">
+                    <div key={`slide-${index}`} className="w-full h-[600px] md:h-[700px] lg:h-[800px] flex-shrink-0">
                       <img 
                         src={src} 
                         alt={`School scene ${index + 1}`} 
@@ -79,7 +79,7 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1633113093730-47449a1a9c6e?auto=format&fit=crop&q=80&w=1000",
                     "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=1000"
                   ].map((src, index) => (
-                    <div key={`slide-repeat-${index}`} className="w-full h-[800px] flex-shrink-0">
+                    <div key={`slide-repeat-${index}`} className="w-full h-[600px] md:h-[700px] lg:h-[800px] flex-shrink-0">
                       <img 
                         src={src} 
                         alt={`School scene ${index + 1}`} 

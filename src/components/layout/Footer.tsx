@@ -2,13 +2,14 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Github, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
     <footer className="w-full bg-accent py-16 border-t pb-24 md:pb-16">
-      <div className="container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-[1300px] mx-auto">
+      <div className="container grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-[1300px] mx-auto">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <div className="relative w-8 h-8 rounded-md bg-foreground">
@@ -42,48 +43,63 @@ export const Footer = () => {
         <div>
           <h3 className="font-medium text-sm uppercase tracking-wider mb-4">Resources</h3>
           <ul className="space-y-3">
-            {["Documentation", "Tutorials", "Support", "FAQ", "Changelog"].map((item) => (
-              <li key={item}>
-                <a 
-                  href="#" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
+            <li>
+              <Link to="/docs" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Documentation
+              </Link>
+            </li>
+            <li>
+              <Link to="/tutorials" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Tutorials
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Support
+              </Link>
+            </li>
+            <li>
+              <Link to="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                FAQ
+              </Link>
+            </li>
+            <li>
+              <Link to="/changelog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Changelog
+              </Link>
+            </li>
           </ul>
         </div>
         
         <div>
           <h3 className="font-medium text-sm uppercase tracking-wider mb-4">Company</h3>
           <ul className="space-y-3">
-            {["About us", "Blog", "Careers", "Press", "Partners"].map((item) => (
-              <li key={item}>
-                <a 
-                  href="#" 
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
+            <li>
+              <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                About us
+              </Link>
+            </li>
+            <li>
+              <Link to="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Blog
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Careers
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Press
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Partners
+              </Link>
+            </li>
           </ul>
-        </div>
-        
-        <div>
-          <h3 className="font-medium text-sm uppercase tracking-wider mb-4">Subscribe</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            Get the latest updates and offers from our team.
-          </p>
-          <div className="flex space-x-2">
-            <input 
-              type="email" 
-              placeholder="Your email" 
-              className="rounded-md border border-border bg-white px-3 py-2 text-sm flex-1"
-            />
-            <Button size="sm" className="shrink-0">Subscribe</Button>
-          </div>
         </div>
       </div>
       
@@ -92,15 +108,15 @@ export const Footer = () => {
           © {currentYear} SchoolRider by <a href="https://solangigs.com" className="hover:text-primary transition-colors">Solangigs</a>. All rights reserved.
         </p>
         <div className="flex gap-6">
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/terms-conditions" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Terms
-          </a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          </Link>
+          <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Privacy
-          </a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          </Link>
+          <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Cookies
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
