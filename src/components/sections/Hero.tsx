@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
 
 export const Hero = () => {
   return (
@@ -38,53 +40,56 @@ export const Hero = () => {
               </Link>
             </div>
           </div>
-          <div className="flex-1 relative h-[800px]">
-            <div className="absolute w-full h-full overflow-hidden">
-              <div className="flex justify-center w-full h-full">
-               <motion.div
-                  className="w-full max-w-[400px] flex flex-col gap-8"
+          
+          {/* Modern vertical slideshow */}
+          <div className="flex-1 relative h-[800px] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
+            <div className="absolute inset-0 w-full h-full">
+              <div className="vertical-slideshow h-full w-full">
+                <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10 pointer-events-none"></div>
+                
+                <motion.div
+                  className="flex flex-col w-full"
                   animate={{ 
-                    y: ["0%", "-50%"] 
+                    y: [0, -100 * 6]  // Number of images * -100%
                   }}
                   transition={{
                     y: {
                       repeat: Infinity,
                       repeatType: "loop",
-                      duration: 8,
+                      duration: 20,
                       ease: "linear"
                     }
                   }}
                 >
-                  {[ 
-                    "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
+                  {[
+                    "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`first-${index}`} className="w-full rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`slide-${index}`} className="w-full h-[800px] flex-shrink-0">
                       <img 
                         src={src} 
-                        alt={`Image ${index + 1}`} 
-                        className="w-full h-[700px] object-cover" 
+                        alt={`School scene ${index + 1}`} 
+                        className="w-full h-full object-cover object-center" 
                       />
                     </div>
                   ))}
-
-                  {[ 
-                    "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1571210862729-78a52d3779a2?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
-                    "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
+                  
+                  {/* Duplicate the first few images to create a seamless loop */}
+                  {[
+                    "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&q=80",
+                    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`second-${index}`} className="w-full rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`slide-repeat-${index}`} className="w-full h-[800px] flex-shrink-0">
                       <img 
                         src={src} 
-                        alt={`Image ${index + 1}`} 
-                        className="w-full h-[700px] object-cover" 
+                        alt={`School scene ${index + 1}`} 
+                        className="w-full h-full object-cover object-center" 
                       />
                     </div>
                   ))}
@@ -92,6 +97,7 @@ export const Hero = () => {
               </div>
             </div>
             
+            {/* Decorative elements */}
             <div className="absolute -z-10 -top-20 -right-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
             <div className="absolute -z-10 -bottom-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl"></div>
             <motion.div 
