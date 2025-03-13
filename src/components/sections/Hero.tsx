@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LogIn } from "lucide-react";
@@ -62,11 +63,11 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`first-${index}`} className="w-full h-[700px] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`first-${index}`} className="w-full rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
-                        className="w-full h-full object-cover" 
+                        className="w-full h-[700px] object-cover" 
                       />
                     </div>
                   ))}
@@ -79,11 +80,11 @@ export const Hero = () => {
                     "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&q=80",
                     "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80"
                   ].map((src, index) => (
-                    <div key={`second-${index}`} className="w-full h-[700px] rounded-xl overflow-hidden shadow-xl border border-white/20">
+                    <div key={`second-${index}`} className="w-full rounded-xl overflow-hidden shadow-xl border border-white/20">
                       <img 
                         src={src} 
                         alt={`Image ${index + 1}`} 
-                        className="w-full h-full object-cover" 
+                        className="w-full h-[700px] object-cover" 
                       />
                     </div>
                   ))}
