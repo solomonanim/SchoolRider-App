@@ -3,11 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { SchoolRiderPlugin } from "./components/plugins/SchoolRiderPlugin";
-import { AppProvider } from "./context/AppContext";
+import { AppProvider, useAppContext } from "./context/AppContext";
 import Blog from "./pages/Blog";
 import FAQ from "./pages/FAQ";
 import Documentation from "./pages/Documentation";
@@ -22,6 +22,17 @@ import CreatePost from "./pages/CreatePost";
 
 const queryClient = new QueryClient();
 
+// Protected route component for authenticated users
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAppContext();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/plugin" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AppProvider>
@@ -34,7 +45,11 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/plugin" element={<SchoolRiderPlugin />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/create-post" element={<CreatePost />} />
+              <Route path="/create-post" element={
+                <ProtectedRoute>
+                  <CreatePost />
+                </ProtectedRoute>
+              } />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/docs" element={<Documentation />} />
               <Route path="/terms-conditions" element={<TermsConditions />} />
