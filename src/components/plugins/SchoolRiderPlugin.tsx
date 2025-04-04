@@ -8,7 +8,7 @@ import { RiderDashboard } from "./dashboards/RiderDashboard";
 import { TeacherDashboard } from "./dashboards/TeacherDashboard";
 import { useAppContext, UserRole } from "@/context/AppContext";
 import { Car, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 
 export const SchoolRiderPlugin = () => {

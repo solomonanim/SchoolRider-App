@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,7 +42,16 @@ export const SchoolRiderLoginPage: React.FC<SchoolRiderLoginPageProps> = ({
     setIsLoading(true);
     
     try {
-      await login(email, password, userType);
+      // Mocking user data for demo purposes
+      const mockUserData = {
+        id: `user_${Date.now()}`,
+        name: email.split('@')[0],
+        email: email,
+        role: userType,
+      };
+      
+      login(mockUserData);
+      
       toast({
         title: "Login Successful",
         description: `You have logged in as a ${userType}`,
