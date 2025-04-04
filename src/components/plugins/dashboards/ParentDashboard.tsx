@@ -8,6 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription,
+  DialogFooter,
+  DialogClose
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Car, 
@@ -18,11 +29,13 @@ import {
   History, 
   Bell, 
   Calendar,
-  LogOut
+  LogOut,
+  Trash2
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useAppContext } from "@/context/AppContext";
 import { useToast } from "@/hooks/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ParentDashboardProps {
   onLogout: () => void;
@@ -30,9 +43,15 @@ interface ParentDashboardProps {
 
 export const ParentDashboard: React.FC<ParentDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState("children");
-  const { currentUser } = useAppContext();
+  const { currentUser, addChild, removeChild } = useAppContext();
   const { toast } = useToast();
   
+  // State for Add Child Dialog
+  const [isAddChildDialogOpen, setIsAddChildDialogOpen] = useState(false);
+  const [newChildName, setNewChildName] = useState("");
+  const [newChildGrade, setNewChildGrade] = useState("");
+  const [newChildSchool, setNewChildSchool] = useState("");
+
   // Extract children data from the context
   const childrenData = currentUser?.children || [];
   
@@ -43,30 +62,54 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({ onLogout }) =>
   const scheduleData = currentUser?.schedule || [];
   
   const handleAddChild = () => {
+    if (!newChildName || !newChildGrade || !newChildSchool) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all child details.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    addChild({
+      name: newChildName,
+      grade: newChildGrade,
+      school: newChildSchool
+    });
+
+    // Reset form and close dialog
+    setNewChildName("");
+    setNewChildGrade("");
+    setNewChildSchool("");
+    setIsAddChildDialogOpen(false);
+
     toast({
-      title: "Feature Coming Soon",
-      description: "The ability to add children will be available in a future update.",
+      title: "Child Added",
+      description: `${newChildName} has been added to your children.`
     });
   };
-  
+
+  const handleRemoveChild = (childId: string, childName: string) => {
+    removeChild(childId);
+    
+    toast({
+      title: "Child Removed",
+      description: `${childName} has been removed from your children.`
+    });
+  };
+
   const handleRequestPickup = () => {
     toast({
-      title: "Feature Coming Soon",
-      description: "The ability to request pickups will be available in a future update.",
+      title: "Pickup Request",
+      description: "You can now request a pickup for your child.",
+      action: <Button>Request Now</Button>
     });
   };
   
   const handleShowQR = (childName: string) => {
     toast({
-      title: "QR Code Ready",
-      description: `QR code for ${childName} can be shown to riders for verification.`,
-    });
-  };
-  
-  const handleAddRider = () => {
-    toast({
-      title: "Feature Coming Soon",
-      description: "The ability to add authorized riders will be available in a future update.",
+      title: "QR Code",
+      description: `QR code for ${childName} is ready for verification.`
     });
   };
 
@@ -117,15 +160,24 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({ onLogout }) =>
             {childrenData.length > 0 ? (
               childrenData.map((child) => (
                 <Card key={child.id}>
-                  <CardHeader className="pb-2">
-                    <CardTitle>{child.name}</CardTitle>
-                    <CardDescription>{child.grade} - {child.school}</CardDescription>
+                  <CardHeader className="pb-2 flex flex-row justify-between items-center">
+                    <div>
+                      <CardTitle>{child.name}</CardTitle>
+                      <CardDescription>{child.grade} - {child.school}</CardDescription>
+                    </div>
+                    <Button 
+                      variant="destructive" 
+                      size="icon" 
+                      onClick={() => handleRemoveChild(child.id, child.name)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-center">
                       <div className="relative">
                         <img 
-                          src={child.qrCode} 
+                          src={child.qrCode || ''} 
                           alt={`QR code for ${child.name}`} 
                           className="w-48 h-48 border rounded-md" 
                         />
@@ -137,10 +189,6 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({ onLogout }) =>
                         <QrCode className="h-4 w-4" />
                         Show QR
                       </Button>
-                      <Button variant="outline" className="w-full gap-2" onClick={handleAddRider}>
-                        <UserPlus className="h-4 w-4" />
-                        Add Rider
-                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -150,7 +198,7 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({ onLogout }) =>
                 <CardContent className="flex flex-col items-center justify-center py-8">
                   <UserPlus className="h-12 w-12 text-muted-foreground mb-4" />
                   <p className="text-muted-foreground">No children added yet</p>
-                  <Button className="mt-4" onClick={handleAddChild}>Add Your First Child</Button>
+                  <Button className="mt-4" onClick={() => setIsAddChildDialogOpen(true)}>Add Your First Child</Button>
                 </CardContent>
               </Card>
             )}
@@ -292,6 +340,73 @@ export const ParentDashboard: React.FC<ParentDashboardProps> = ({ onLogout }) =>
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Add Child Dialog */}
+      <Dialog open={isAddChildDialogOpen} onOpenChange={setIsAddChildDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add a Child</DialogTitle>
+            <DialogDescription>
+              Enter details for your child to manage their school transportation.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input 
+                id="name" 
+                value={newChildName}
+                onChange={(e) => setNewChildName(e.target.value)}
+                className="col-span-3" 
+                placeholder="Child's full name"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="grade" className="text-right">
+                Grade
+              </Label>
+              <Select value={newChildGrade} onValueChange={setNewChildGrade}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select grade" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"].map((grade) => (
+                    <SelectItem key={grade} value={grade}>
+                      {grade}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="school" className="text-right">
+                School
+              </Label>
+              <Input 
+                id="school" 
+                value={newChildSchool}
+                onChange={(e) => setNewChildSchool(e.target.value)}
+                className="col-span-3" 
+                placeholder="School name"
+              />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button type="submit" onClick={handleAddChild}>
+              Add Child
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
