@@ -47,7 +47,7 @@ export const SchoolRiderPlugin = () => {
             {currentUser.name}
           </span>
           <Avatar className="cursor-pointer">
-            <AvatarImage src={currentUser.avatar || ''} />
+            {/* Fix: Remove the attempt to access currentUser.avatar which doesn't exist */}
             <AvatarFallback className="bg-primary/10">
               <User className="h-4 w-4" />
             </AvatarFallback>
