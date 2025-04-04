@@ -33,7 +33,7 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAppContext, Teacher, Homeroom } from "@/context/AppContext";
+import { useAppContext } from "@/context/AppContext";
 import { useToast } from "@/hooks/use-toast";
 
 interface SchoolDashboardProps {
@@ -56,18 +56,18 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
   const [newHomeroom, setNewHomeroom] = useState({
     name: "",
     grade: "",
-    teacherId: 0
+    teacherId: ""
   });
   
   // Assign teacher to homeroom state
   const [assignTeacherHomeroom, setAssignTeacherHomeroom] = useState({
-    teacherId: 0,
-    homeroomId: 0
+    teacherId: "",
+    homeroomId: ""
   });
   
   // Get school data
-  const schoolId = currentUser?.schoolId || 0;
-  const schoolName = currentUser?.school?.name || "School";
+  const schoolId = currentUser?.schoolId || "";
+  const schoolName = currentUser?.school || "School";
   const teachers = currentUser?.teachers || [];
   const homerooms = currentUser?.homerooms || [];
   
@@ -106,8 +106,8 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
     addTeacher({
       name: newTeacher.name,
       email: newTeacher.email,
-      schoolId: schoolId,
-      homeroomIds: []
+      subject: "",
+      grade: "",
     });
     
     setNewTeacher({ name: "", email: "" });
@@ -132,11 +132,10 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
     addHomeroom({
       name: newHomeroom.name,
       grade: newHomeroom.grade,
-      teacherId: newHomeroom.teacherId || 0,
-      schoolId: schoolId
+      teacherId: newHomeroom.teacherId || undefined,
     });
     
-    setNewHomeroom({ name: "", grade: "", teacherId: 0 });
+    setNewHomeroom({ name: "", grade: "", teacherId: "" });
     
     toast({
       title: "Homeroom Added",
@@ -155,9 +154,12 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
       return;
     }
     
-    assignTeacherToHomeroom(assignTeacherHomeroom.teacherId, assignTeacherHomeroom.homeroomId);
+    assignTeacherToHomeroom(
+      assignTeacherHomeroom.teacherId, 
+      assignTeacherHomeroom.homeroomId
+    );
     
-    setAssignTeacherHomeroom({ teacherId: 0, homeroomId: 0 });
+    setAssignTeacherHomeroom({ teacherId: "", homeroomId: "" });
     
     toast({
       title: "Teacher Assigned",
@@ -171,7 +173,8 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
   };
   
   // Get teacher name by ID
-  const getTeacherName = (teacherId: number) => {
+  const getTeacherName = (teacherId: string | undefined) => {
+    if (!teacherId) return "Unassigned";
     const teacher = teachers.find(t => t.id === teacherId);
     return teacher ? teacher.name : "Unassigned";
   };
@@ -408,15 +411,15 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                               <p className="font-medium">{teacher.name}</p>
                               <p className="text-sm text-muted-foreground">{teacher.email}</p>
                               <div className="flex flex-wrap gap-1 mt-1">
-                                {teacher.homeroomIds.map((hId) => {
-                                  const homeroom = homerooms.find(h => h.id === hId);
-                                  return homeroom ? (
-                                    <Badge key={hId} variant="outline" className="text-xs">
+                                {homerooms
+                                  .filter(h => h.teacherId === teacher.id)
+                                  .map((homeroom) => (
+                                    <Badge key={homeroom.id} variant="outline" className="text-xs">
                                       {homeroom.name} ({homeroom.grade})
                                     </Badge>
-                                  ) : null;
-                                })}
-                                {teacher.homeroomIds.length === 0 && (
+                                  ))
+                                }
+                                {homerooms.filter(h => h.teacherId === teacher.id).length === 0 && (
                                   <Badge variant="secondary" className="text-xs">No Homerooms</Badge>
                                 )}
                               </div>
@@ -440,7 +443,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                                     <Select
                                       onValueChange={(value) => setAssignTeacherHomeroom({
                                         teacherId: teacher.id,
-                                        homeroomId: parseInt(value)
+                                        homeroomId: value
                                       })}
                                     >
                                       <SelectTrigger id="homeroom">
@@ -448,11 +451,11 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                                       </SelectTrigger>
                                       <SelectContent>
                                         {homerooms
-                                          .filter(h => h.teacherId === 0 || h.teacherId === teacher.id)
+                                          .filter(h => !h.teacherId || h.teacherId === teacher.id)
                                           .map((homeroom) => (
                                             <SelectItem 
                                               key={homeroom.id} 
-                                              value={homeroom.id.toString()}
+                                              value={homeroom.id}
                                             >
                                               {homeroom.name} ({homeroom.grade})
                                             </SelectItem>
@@ -565,7 +568,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                                     <Label htmlFor="teacher">Teacher</Label>
                                     <Select
                                       onValueChange={(value) => setAssignTeacherHomeroom({
-                                        teacherId: parseInt(value),
+                                        teacherId: value,
                                         homeroomId: homeroom.id
                                       })}
                                     >
@@ -576,7 +579,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                                         {teachers.map((teacher) => (
                                           <SelectItem 
                                             key={teacher.id} 
-                                            value={teacher.id.toString()}
+                                            value={teacher.id}
                                           >
                                             {teacher.name}
                                           </SelectItem>
@@ -636,7 +639,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                       <Select
                         onValueChange={(value) => setNewHomeroom({
                           ...newHomeroom, 
-                          teacherId: parseInt(value)
+                          teacherId: value
                         })}
                       >
                         <SelectTrigger id="homeroomTeacher">
@@ -646,7 +649,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                           {teachers.map((teacher) => (
                             <SelectItem 
                               key={teacher.id} 
-                              value={teacher.id.toString()}
+                              value={teacher.id}
                             >
                               {teacher.name}
                             </SelectItem>

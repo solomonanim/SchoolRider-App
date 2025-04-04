@@ -84,16 +84,16 @@ export interface AppContextType {
   updateChild: (childId: string, updatedChild: Partial<Child>) => void;
   removeChild: (childId: string) => void;
   // School management functions
-  addHomeroom?: (homeroom: Omit<Homeroom, 'id'>) => void;
-  addTeacher?: (teacher: Omit<Teacher, 'id'>) => void;
-  assignTeacherToHomeroom?: (teacherId: string, homeroomId: string) => void;
+  addHomeroom: (homeroom: Omit<Homeroom, 'id'>) => void;
+  addTeacher: (teacher: Omit<Teacher, 'id'>) => void;
+  assignTeacherToHomeroom: (teacherId: string, homeroomId: string) => void;
   // Dummy property for school-select
   schoolsList: School[];
   // Registration functions
-  registerSchool?: (schoolData: any) => Promise<void>;
-  registerTeacher?: (teacherData: any) => Promise<void>;
-  registerParent?: (parentData: any) => Promise<void>;
-  registerRider?: (riderData: any) => Promise<void>;
+  registerSchool: (schoolData: any) => Promise<void>;
+  registerTeacher: (teacherData: any) => Promise<void>;
+  registerParent: (parentData: any) => Promise<void>;
+  registerRider: (riderData: any) => Promise<void>;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -105,6 +105,13 @@ export const AppContext = createContext<AppContextType>({
   updateChild: () => {},
   removeChild: () => {},
   schoolsList: [],
+  registerSchool: async () => {},
+  registerTeacher: async () => {},
+  registerParent: async () => {},
+  registerRider: async () => {},
+  addHomeroom: () => {},
+  addTeacher: () => {},
+  assignTeacherToHomeroom: () => {},
 });
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
