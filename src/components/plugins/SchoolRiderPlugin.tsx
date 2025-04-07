@@ -11,7 +11,7 @@ import { Car, User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 
-export const SchoolRiderPlugin = () => {
+export const SchoolRiderApp = () => { // Renamed from SchoolRiderPlugin
   const { isAuthenticated, currentUser, logout } = useAppContext();
   const [showSignup, setShowSignup] = useState(false);
   

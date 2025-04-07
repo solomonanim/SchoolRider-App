@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -70,7 +69,7 @@ export const Header = () => {
           <div className="ml-2">
             <ThemeButton />
           </div>
-          <Link to="/plugin">
+          <Link to="/app">
             <Button className="ml-4 shadow-sm">Login</Button>
           </Link>
         </nav>
@@ -110,7 +109,7 @@ export const Header = () => {
                   {item.title}
                 </Link>
               ))}
-              <Link to="/plugin" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/app" onClick={() => setIsMenuOpen(false)}>
                 <Button className="mt-4 w-full">Login</Button>
               </Link>
             </nav>

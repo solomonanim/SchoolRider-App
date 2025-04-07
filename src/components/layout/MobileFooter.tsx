@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Home, Mail, User } from "lucide-react";
@@ -10,18 +9,18 @@ export const MobileFooter = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Check if we're on a plugin page
-  const isPluginPage = location.pathname === "/plugin" || 
-                       location.pathname.startsWith("/plugin/");
+  // Check if we're on the app page
+  const isAppPage = location.pathname === "/app" || 
+                    location.pathname.startsWith("/app/");
   
   const handleAccountClick = () => {
-    navigate("/plugin");
+    navigate("/app");
   };
   
   return (
     <>
       {/* Spacer div to prevent content from being hidden behind the footer on mobile */}
-      <div className={cn("md:hidden", isPluginPage ? "h-20" : "h-16")} />
+      <div className={cn("md:hidden", isAppPage ? "h-20" : "h-16")} />
       
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border py-2 px-4 z-50">
         <div className="flex justify-around items-center">
