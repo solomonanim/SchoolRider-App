@@ -118,13 +118,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
 
-  // Sample schools list for the school-select component
+  // Updated school list to only include Cornerstone International Academy in Accra, Ghana
   const schoolsList: School[] = [
-    { id: "1", name: "Washington Elementary", country: "us" },
-    { id: "2", name: "Lincoln High School", country: "us" },
-    { id: "3", name: "Roosevelt Middle School", country: "us" },
-    { id: "4", name: "Churchill Academy", country: "uk" },
-    { id: "5", name: "Victoria School", country: "uk" }
+    { id: "1", name: "Cornerstone International Academy", country: "gh" }
   ];
 
   const login = (user: UserData) => {
@@ -182,8 +178,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       name: schoolData.name,
       email: schoolData.email,
       role: UserRole.SCHOOL,
-      schoolId: `school_${Date.now()}`,
-      school: schoolData.name,
+      schoolId: "1",
+      school: "Cornerstone International Academy",
       teachers: [],
       homerooms: []
     });
@@ -211,7 +207,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       id: `child_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
       name: child.name,
       grade: child.grade,
-      school: child.schoolId ? schoolsList.find(s => s.id === child.schoolId.toString())?.name || "" : "",
+      school: "Cornerstone International Academy",
       qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(child.name)}`,
     }));
     

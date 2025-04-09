@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Card,
@@ -33,7 +32,7 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAppContext } from "@/context/AppContext";
+import { useAppContext, Teacher, Homeroom } from "@/context/AppContext";
 import { useToast } from "@/hooks/use-toast";
 
 interface SchoolDashboardProps {
@@ -67,29 +66,35 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
   
   // Get school data
   const schoolId = currentUser?.schoolId || "";
-  const schoolName = currentUser?.school || "School";
+  const schoolName = currentUser?.school || "Cornerstone International Academy";
   const teachers = currentUser?.teachers || [];
   const homerooms = currentUser?.homerooms || [];
+
+  // Available grades in Cornerstone International Academy
+  const availableGrades = [
+    "KG", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", 
+    "MYP Year 1", "MYP Year 2", "MYP Year 3", "MYP Year 4", "MYP Year 5", "EFY"
+  ];
   
   // Mock data for students in this school
   const students = [
-    { id: 1, name: "Alex Johnson", grade: "5th Grade", homeroom: "5A", status: "In School" },
-    { id: 2, name: "Emma Wilson", grade: "3rd Grade", homeroom: "3B", status: "In School" },
-    { id: 3, name: "Noah Brown", grade: "5th Grade", homeroom: "5A", status: "Absent" },
-    { id: 4, name: "Olivia Garcia", grade: "3rd Grade", homeroom: "3B", status: "In School" },
-    { id: 5, name: "James Davis", grade: "5th Grade", homeroom: "5B", status: "In School" },
+    { id: 1, name: "Alex Johnson", grade: "Grade 5", homeroom: "Homeroom 1", status: "In School" },
+    { id: 2, name: "Emma Wilson", grade: "Grade 3", homeroom: "Homeroom 2", status: "In School" },
+    { id: 3, name: "Noah Brown", grade: "Grade 5", homeroom: "Homeroom 1", status: "Absent" },
+    { id: 4, name: "Olivia Garcia", grade: "Grade 3", homeroom: "Homeroom 2", status: "In School" },
+    { id: 5, name: "James Davis", grade: "Grade 5", homeroom: "Homeroom 3", status: "In School" },
   ];
   
   const recentPickups = [
-    { id: 1, name: "Alex Johnson", grade: "5th Grade", homeroom: "5A", status: "Picked up", time: "3:15 PM", rider: "Jane Smith (Mother)" },
-    { id: 2, name: "Emma Wilson", grade: "3rd Grade", homeroom: "3B", status: "Pending", time: "3:20 PM", rider: "Tom Wilson (Father)" },
-    { id: 3, name: "Noah Brown", grade: "5th Grade", homeroom: "5A", status: "Picked up", time: "3:10 PM", rider: "Sarah Brown (Mother)" },
+    { id: 1, name: "Alex Johnson", grade: "Grade 5", homeroom: "Homeroom 1", status: "Picked up", time: "3:15 PM", rider: "Jane Smith (Mother)" },
+    { id: 2, name: "Emma Wilson", grade: "Grade 3", homeroom: "Homeroom 2", status: "Pending", time: "3:20 PM", rider: "Tom Wilson (Father)" },
+    { id: 3, name: "Noah Brown", grade: "Grade 5", homeroom: "Homeroom 1", status: "Picked up", time: "3:10 PM", rider: "Sarah Brown (Mother)" },
   ];
 
   const upcomingPickups = [
-    { id: 1, name: "Sophia Davis", grade: "5th Grade", homeroom: "5B", time: "3:25 PM", status: "On time" },
-    { id: 2, name: "Liam Miller", grade: "3rd Grade", homeroom: "3B", time: "3:25 PM", status: "On time" },
-    { id: 3, name: "Olivia Garcia", grade: "3rd Grade", homeroom: "3B", time: "3:30 PM", status: "Delayed" },
+    { id: 1, name: "Sophia Davis", grade: "Grade 5", homeroom: "Homeroom 3", time: "3:25 PM", status: "On time" },
+    { id: 2, name: "Liam Miller", grade: "Grade 3", homeroom: "Homeroom 2", time: "3:25 PM", status: "On time" },
+    { id: 3, name: "Olivia Garcia", grade: "Grade 3", homeroom: "Homeroom 2", time: "3:30 PM", status: "Delayed" },
   ];
   
   // Handler for adding a new teacher
@@ -184,7 +189,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
       <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">School Admin Dashboard</h1>
-          <p className="text-muted-foreground">{schoolName} - Manage students, teachers, and homerooms</p>
+          <p className="text-muted-foreground">{schoolName} - Accra, Ghana</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button 
@@ -507,7 +512,7 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                       <Input 
                         id="teacherEmail" 
                         type="email" 
-                        placeholder="e.g. teacher@school.edu"
+                        placeholder="e.g. teacher@cornerstone.edu.gh"
                         value={newTeacher.email}
                         onChange={(e) => setNewTeacher({...newTeacher, email: e.target.value})}
                       />
@@ -620,19 +625,27 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                       <Label htmlFor="homeroomName">Homeroom Name</Label>
                       <Input 
                         id="homeroomName" 
-                        placeholder="e.g. 5A"
+                        placeholder="e.g. Homeroom 1"
                         value={newHomeroom.name}
                         onChange={(e) => setNewHomeroom({...newHomeroom, name: e.target.value})}
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="grade">Grade Level</Label>
-                      <Input 
-                        id="grade" 
-                        placeholder="e.g. 5th Grade"
-                        value={newHomeroom.grade}
-                        onChange={(e) => setNewHomeroom({...newHomeroom, grade: e.target.value})}
-                      />
+                      <Select
+                        onValueChange={(value) => setNewHomeroom({...newHomeroom, grade: value})}
+                      >
+                        <SelectTrigger id="grade">
+                          <SelectValue placeholder="Select a grade" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableGrades.map((grade) => (
+                            <SelectItem key={grade} value={grade}>
+                              {grade}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="homeroomTeacher">Assign Teacher (Optional)</Label>
@@ -707,22 +720,22 @@ export const SchoolDashboard: React.FC<SchoolDashboardProps> = ({ onLogout }) =>
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-primary" />
-                          <p className="font-medium">Nov 22, 2023</p>
+                          <p className="font-medium">June 15, 2025</p>
                         </div>
                         <Badge>Early Dismissal</Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground mt-1">1:00 PM - Thanksgiving Break</p>
+                      <p className="text-sm text-muted-foreground mt-1">1:00 PM - School Event</p>
                     </div>
                     
                     <div className="border rounded-md p-3">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-primary" />
-                          <p className="font-medium">Dec 20, 2023</p>
+                          <p className="font-medium">July 20, 2025</p>
                         </div>
                         <Badge>Early Dismissal</Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground mt-1">12:30 PM - Winter Break</p>
+                      <p className="text-sm text-muted-foreground mt-1">12:30 PM - End of Term</p>
                     </div>
                   </div>
                 </div>

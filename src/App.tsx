@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,7 +27,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAppContext();
   
   if (!isAuthenticated) {
-    return <Navigate to="/plugin" replace />;
+    return <Navigate to="/app" replace />;
   }
   
   return <>{children}</>;

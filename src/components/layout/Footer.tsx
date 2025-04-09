@@ -18,7 +18,7 @@ export const Footer = () => {
             <span className="font-display font-semibold text-xl">SchoolRider</span>
           </div>
           <p className="text-muted-foreground text-sm max-w-xs">
-            A comprehensive solution for safe and efficient school dismissal processes.
+            A comprehensive solution for safe and efficient school dismissal processes in Accra, Ghana.
           </p>
           <div className="flex space-x-4">
             <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
@@ -105,7 +105,7 @@ export const Footer = () => {
       
       <div className="container mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4 max-w-[1300px] mx-auto">
         <p className="text-sm text-muted-foreground">
-          © {currentYear} SchoolRider by <a href="https://solangigs.com" className="hover:text-primary transition-colors">Solangigs</a>. All rights reserved.
+          © {currentYear} SchoolRider by Solomon Anim. All rights reserved.
         </p>
         <div className="flex gap-6">
           <Link to="/terms-conditions" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

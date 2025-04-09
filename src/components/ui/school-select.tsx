@@ -14,10 +14,8 @@ interface SchoolSelectProps {
 export function SchoolSelect({ value, onValueChange, label, className, country }: SchoolSelectProps) {
   const { schoolsList } = useAppContext();
   
-  // Filter schools by country if provided
-  const filteredSchools = country 
-    ? schoolsList.filter(school => school.country === country)
-    : schoolsList;
+  // Only showing Cornerstone International Academy (always filtered to Ghana)
+  const filteredSchools = schoolsList.filter(school => school.country === "gh");
 
   return (
     <div className={className}>
@@ -35,7 +33,7 @@ export function SchoolSelect({ value, onValueChange, label, className, country }
             ))
           ) : (
             <SelectItem value="no-schools" disabled>
-              {country ? "No schools found in selected country" : "No schools available"}
+              No schools available in Ghana
             </SelectItem>
           )}
         </SelectContent>
